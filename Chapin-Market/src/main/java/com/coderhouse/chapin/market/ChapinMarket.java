@@ -3,6 +3,7 @@
  */
 
 package com.coderhouse.chapin.market;
+import Vista.Login;
 
 /**
  *
@@ -11,6 +12,9 @@ package com.coderhouse.chapin.market;
 public class ChapinMarket {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        Conexion conexion = new Conexion();
+        conexion.establecerConexion();
+       Login mostrar = new Login();
+        mostrar.setVisible(true);
     }
 }
