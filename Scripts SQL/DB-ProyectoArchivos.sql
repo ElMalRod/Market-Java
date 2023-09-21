@@ -27,9 +27,14 @@ CREATE TABLE ControlEmpresas.Tienda(
 CREATE TABLE ControlEmpresas.Producto(
     idProducto SERIAL PRIMARY KEY,
     nombreProducto VARCHAR(50) NOT NULL,
+    fabricante VARCHAR(50) NOT NULL,
     precio DECIMAL(10,2) NOT NULL,
+    cantidad INT NOT NULL,
+    estado BOOLEAN NOT NULL, /* 0-BODEGA 1-ESTANTERIA*/
+    pasillo INT , /*SI NO TIENE NUMERO ES QUE ESTA EN BODEGA*/
     idTienda INT NOT NULL,
     FOREIGN KEY (idTienda) REFERENCES ControlEmpresas.Tienda(idTienda)
+
 );
 
 CREATE TABLE ControlPersonal.Empleado(
@@ -49,16 +54,21 @@ CREATE TABLE ControlPersonal.Cliente(
     nombreCliente VARCHAR(50) NOT NULL,
     telefono VARCHAR(10) NOT NULL,
     dpi VARCHAR(13) NOT NULL,
-    descuento DECIMAL(10,2) NOT NULL,
+    tarjeta VARCHAR(20),
+    puntos INT,
+    descuento DECIMAL(10,2),
     direccion VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE ControlInventario.Inventario(
     idInventario SERIAL PRIMARY KEY,
     cantidad INT NOT NULL,
+    estado BOOLEAN NOT NULL,
+    pasillo INT ,
     idProducto INT NOT NULL,
     FOREIGN KEY (idProducto) REFERENCES ControlEmpresas.Producto(idProducto)
 );
+
 
 CREATE TABLE ControlVentas.Venta(
     idVenta SERIAL PRIMARY KEY,

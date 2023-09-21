@@ -124,22 +124,25 @@ public class Login extends javax.swing.JFrame {
                 String contraseñaAlmacenada = resultadoUsuario.getString("password");
                 if (password.equals(contraseñaAlmacenada)) {
                     String rol = resultadoUsuario.getString("rol");
+                    int id = resultadoUsuario.getInt("idTienda");
+                    System.out.println("id "+id);
                     if ("Administrador".equals(rol)) {
-                        JFAdmin adminFrame = new JFAdmin();
-                        adminFrame.setVisible(true);
-                        
+                        JFBodega bodegaFrame = new JFBodega(id);
+                        bodegaFrame.setVisible(true);
+
                     } else if ("Cajero".equals(rol)) {
                         JFCajero cajeroFrame = new JFCajero();
                         cajeroFrame.setVisible(true);
-                        
+
                     } else if ("Bodega".equals(rol)) {
+                        
                         JFBodega bodegaFrame = new JFBodega();
                         bodegaFrame.setVisible(true);
-                        
+
                     } else if ("Inventario".equals(rol)) {
                         JFInventario inventarioFrame = new JFInventario();
                         inventarioFrame.setVisible(true);
-                        
+
                     } else {
                         JOptionPane.showMessageDialog(this, "Rol desconocido");
                     }
