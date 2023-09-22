@@ -125,24 +125,27 @@ public class Login extends javax.swing.JFrame {
                 if (password.equals(contraseñaAlmacenada)) {
                     String rol = resultadoUsuario.getString("rol");
                     int id = resultadoUsuario.getInt("idTienda");
-                    System.out.println("id "+id);
-                    if ("Administrador".equals(rol)) {
-                        JFBodega bodegaFrame = new JFBodega(id);
-                        bodegaFrame.setVisible(true);
+                    System.out.println("id " + id);
 
+                    String nombreUsuario = resultadoUsuario.getString("nombreEmpleado");
+
+                    if ("Administrador".equals(rol)) {
+                        JFAdmin adminFrame = new JFAdmin();
+                        //adminFrame.setUsuarioYRol(nombreUsuario, rol); // Pasa el nombre de usuario y el rol
+                        adminFrame.setVisible(true);
                     } else if ("Cajero".equals(rol)) {
                         JFCajero cajeroFrame = new JFCajero();
+                        //cajeroFrame.setUsuarioYRol(nombreUsuario, rol); // Pasa el nombre de usuario y el rol
                         cajeroFrame.setVisible(true);
-
                     } else if ("Bodega".equals(rol)) {
-                        
-                        JFBodega bodegaFrame = new JFBodega();
+                        JFBodega bodegaFrame = new JFBodega(id);
+                        bodegaFrame.setUsuarioYRol(nombreUsuario, rol); // Pasa el nombre de usuario y el rol
                         bodegaFrame.setVisible(true);
 
                     } else if ("Inventario".equals(rol)) {
                         JFInventario inventarioFrame = new JFInventario();
+                        //inventarioFrame.setUsuarioYRol(nombreUsuario, rol); // Pasa el nombre de usuario y el rol
                         inventarioFrame.setVisible(true);
-
                     } else {
                         JOptionPane.showMessageDialog(this, "Rol desconocido");
                     }
@@ -150,7 +153,6 @@ public class Login extends javax.swing.JFrame {
                 } else {
                     JOptionPane.showMessageDialog(this, "Contraseña incorrecta");
                 }
-
             } else {
                 JOptionPane.showMessageDialog(this, "Nombre de usuario no encontrado");
             }

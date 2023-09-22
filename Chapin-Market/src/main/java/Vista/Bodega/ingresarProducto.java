@@ -40,8 +40,8 @@ public class ingresarProducto extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jTextField1 = new javax.swing.JTextField();
         txtNombre = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         txtFabricante = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
@@ -53,6 +53,9 @@ public class ingresarProducto extends javax.swing.JPanel {
         jCantidad = new javax.swing.JSpinner();
         jLabel3 = new javax.swing.JLabel();
         btnIngresar = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+
+        jTextField1.setText("jTextField1");
 
         setBackground(new java.awt.Color(255, 255, 255));
         setMaximumSize(new java.awt.Dimension(710, 510));
@@ -69,11 +72,6 @@ public class ingresarProducto extends javax.swing.JPanel {
             }
         });
         add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 120, 400, 33));
-
-        jLabel1.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(102, 102, 102));
-        jLabel1.setText("Nombre ");
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 90, -1, -1));
 
         jLabel2.setText("_____________________________________________________________");
         add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 140, 437, -1));
@@ -139,7 +137,13 @@ public class ingresarProducto extends javax.swing.JPanel {
             }
         });
         add(btnIngresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 410, 150, 40));
+
+        jLabel4.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel4.setText("Nombre ");
+        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 90, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
+
 
     private void btnIngresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIngresarMouseClicked
         // TODO add your handling code here:
@@ -192,14 +196,15 @@ public class ingresarProducto extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel btnIngresar;
     private javax.swing.JSpinner jCantidad;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField txtFabricante;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtPrecio;

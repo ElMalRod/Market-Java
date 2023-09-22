@@ -4,8 +4,16 @@
  */
 package Vista.Bodega;
 
+import com.coderhouse.chapin.market.Conexion;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Image;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -13,7 +21,7 @@ import java.awt.Color;
  */
 public class JFBodega extends javax.swing.JFrame {
 
-   public int id;
+    public int id;
 
     public int getId() {
         return id;
@@ -25,8 +33,49 @@ public class JFBodega extends javax.swing.JFrame {
 
     public JFBodega(int id) {
         initComponents();
+        // MostrarLogo();
         this.id = id;
     }
+
+    private void MostrarLogo() {
+        ImageIcon iconLogo = new ImageIcon(getClass().getResource("/Images/4.png"));
+        Image image = iconLogo.getImage();
+        Image scaledImage = image.getScaledInstance(lbLogo.getWidth(), lbLogo.getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        lbLogo.setIcon(scaledIcon);
+
+    }
+
+    public void setUsuarioYRol(String nombreUsuario, String rol) {
+        btUser.setText(rol + " - " + nombreUsuario);
+        String nombreTienda = obtenerNombreTienda();
+        lblNombreTienda.setText("Tienda: " + nombreTienda); // Muestra el nombre de la tienda en un JLabel
+    }
+
+    private String obtenerNombreTienda() {
+        Connection conexion = new Conexion().establecerConexion();
+        String nombreTienda = "";
+
+        try {
+            String consultaTienda = "SELECT nombreTienda FROM ControlEmpresas.Tienda WHERE idTienda = ?";
+            PreparedStatement pstmtTienda = conexion.prepareStatement(consultaTienda);
+            pstmtTienda.setInt(1, id);
+            ResultSet resultadoTienda = pstmtTienda.executeQuery();
+
+            if (resultadoTienda.next()) {
+                nombreTienda = resultadoTienda.getString("nombreTienda");
+            }
+
+            resultadoTienda.close();
+            pstmtTienda.close();
+            conexion.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error al consultar la tienda: " + e.getMessage());
+        }
+
+        return nombreTienda;
+    }
+
     /**
      * Creates new form JFBodega
      */
@@ -46,7 +95,11 @@ public class JFBodega extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         btnVer = new javax.swing.JLabel();
-        btnAdd = new javax.swing.JLabel();
+        btIngresar = new javax.swing.JLabel();
+        btUser = new javax.swing.JLabel();
+        lblNombreTienda = new javax.swing.JLabel();
+        lbLogo = new javax.swing.JLabel();
+        btnVerInv = new javax.swing.JLabel();
         content = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -77,27 +130,72 @@ public class JFBodega extends javax.swing.JFrame {
                 btnVerMouseExited(evt);
             }
         });
-        jPanel1.add(btnVer, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 166, 192, 50));
+        jPanel1.add(btnVer, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 180, 192, 50));
 
-        btnAdd.setBackground(new java.awt.Color(25, 69, 107));
-        btnAdd.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        btnAdd.setForeground(new java.awt.Color(255, 255, 255));
-        btnAdd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btnAdd.setText("INGRESAR");
-        btnAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnAdd.setOpaque(true);
-        btnAdd.addMouseListener(new java.awt.event.MouseAdapter() {
+        btIngresar.setBackground(new java.awt.Color(25, 69, 107));
+        btIngresar.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        btIngresar.setForeground(new java.awt.Color(255, 255, 255));
+        btIngresar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btIngresar.setText("INGRESAR");
+        btIngresar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btIngresar.setOpaque(true);
+        btIngresar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnAddMouseClicked(evt);
+                btIngresarMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btnAddMouseEntered(evt);
+                btIngresarMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                btnAddMouseExited(evt);
+                btIngresarMouseExited(evt);
             }
         });
-        jPanel1.add(btnAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 190, 50));
+        jPanel1.add(btIngresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 190, 50));
+
+        btUser.setBackground(new java.awt.Color(25, 69, 107));
+        btUser.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        btUser.setForeground(new java.awt.Color(255, 255, 255));
+        btUser.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btUser.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btUser.setOpaque(true);
+        btUser.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btUserMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btUserMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btUserMouseExited(evt);
+            }
+        });
+        jPanel1.add(btUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 500, 190, 50));
+
+        lblNombreTienda.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        lblNombreTienda.setForeground(new java.awt.Color(255, 255, 255));
+        lblNombreTienda.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jPanel1.add(lblNombreTienda, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 190, 40));
+        jPanel1.add(lbLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 150, 130));
+
+        btnVerInv.setBackground(new java.awt.Color(25, 69, 107));
+        btnVerInv.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        btnVerInv.setForeground(new java.awt.Color(255, 255, 255));
+        btnVerInv.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnVerInv.setText("VER INVENTARIO");
+        btnVerInv.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnVerInv.setOpaque(true);
+        btnVerInv.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnVerInvMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnVerInvMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnVerInvMouseExited(evt);
+            }
+        });
+        jPanel1.add(btnVerInv, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 280, 192, 50));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 190, 560));
 
@@ -129,15 +227,15 @@ public class JFBodega extends javax.swing.JFrame {
         btnVer.setBackground(new Color(25, 69, 107));
     }//GEN-LAST:event_btnVerMouseExited
 
-    private void btnAddMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseEntered
+    private void btIngresarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btIngresarMouseEntered
         // TODO add your handling code here:
-        btnAdd.setBackground(new Color(22, 199, 154));
-    }//GEN-LAST:event_btnAddMouseEntered
+        btIngresar.setBackground(new Color(22, 199, 154));
+    }//GEN-LAST:event_btIngresarMouseEntered
 
-    private void btnAddMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseExited
+    private void btIngresarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btIngresarMouseExited
         // TODO add your handling code here:
-        btnAdd.setBackground(new Color(25, 69, 107));
-    }//GEN-LAST:event_btnAddMouseExited
+        btIngresar.setBackground(new Color(25, 69, 107));
+    }//GEN-LAST:event_btIngresarMouseExited
 
     private void btnVerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVerMouseClicked
         // TODO add your handling code here:
@@ -149,7 +247,7 @@ public class JFBodega extends javax.swing.JFrame {
         content.repaint();
     }//GEN-LAST:event_btnVerMouseClicked
 
-    private void btnAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseClicked
+    private void btIngresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btIngresarMouseClicked
         // TODO add your handling code here:
         ingresarProducto p = new ingresarProducto(id);
         p.setSize(710, 510);
@@ -158,7 +256,41 @@ public class JFBodega extends javax.swing.JFrame {
         content.add(p, BorderLayout.CENTER);
         content.revalidate();
         content.repaint();
-    }//GEN-LAST:event_btnAddMouseClicked
+    }//GEN-LAST:event_btIngresarMouseClicked
+
+    private void btUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btUserMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btUserMouseClicked
+
+    private void btUserMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btUserMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btUserMouseEntered
+
+    private void btUserMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btUserMouseExited
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_btUserMouseExited
+
+    private void btnVerInvMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVerInvMouseClicked
+        // TODO add your handling code here:
+        VerProducto verProductoPanel = new VerProducto(id);
+        verProductoPanel.setSize(710, 510);
+        verProductoPanel.setLocation(0, 0);
+        content.removeAll();
+        content.add(verProductoPanel, BorderLayout.CENTER);
+        content.revalidate();
+        content.repaint();
+
+    }//GEN-LAST:event_btnVerInvMouseClicked
+
+    private void btnVerInvMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVerInvMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnVerInvMouseEntered
+
+    private void btnVerInvMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVerInvMouseExited
+        // TODO add your handling code here:
+         btnVerInv.setBackground(new Color(22, 199, 154));
+    }//GEN-LAST:event_btnVerInvMouseExited
 
     /**
      * @param args the command line arguments
@@ -196,9 +328,13 @@ public class JFBodega extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel btnAdd;
+    private javax.swing.JLabel btIngresar;
+    private javax.swing.JLabel btUser;
     private javax.swing.JLabel btnVer;
+    private javax.swing.JLabel btnVerInv;
     private javax.swing.JPanel content;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lbLogo;
+    private javax.swing.JLabel lblNombreTienda;
     // End of variables declaration//GEN-END:variables
 }
