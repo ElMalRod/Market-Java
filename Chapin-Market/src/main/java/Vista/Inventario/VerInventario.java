@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package Vista.Bodega;
+package Vista.Inventario;
 
+import Vista.Bodega.*;
 import com.coderhouse.chapin.market.Conexion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,14 +17,14 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author emili_zxg0ruq
  */
-public class VerProducto extends javax.swing.JPanel {
+public class VerInventario extends javax.swing.JPanel {
 
     public int id;
 
     /**
      * Creates new form VerProducto
      */
-    public VerProducto(int id) {
+    public VerInventario(int id) {
         initComponents();
         this.id = id;
         cargarProductosTienda();
@@ -31,27 +32,29 @@ public class VerProducto extends javax.swing.JPanel {
 
 private void cargarProductosTienda() {
     // Realiza una consulta SQL para obtener los productos de la tienda
-    String consulta = "SELECT nombreProducto, precio, cantidad FROM ControlEmpresas.Producto WHERE idTienda = ? AND estado = ?"; // Estado 1 indica que está en la estantería
+    String consulta = "SELECT nombreProducto, precio, cantidad, pasillo FROM ControlEmpresas.Producto WHERE idTienda = ? AND estado = ?"; // Estado 1 indica que está en la estantería
     Connection conexion = new Conexion().establecerConexion();
 
     DefaultTableModel modelo = new DefaultTableModel();
     modelo.addColumn("Nombre");
     modelo.addColumn("Precio");
     modelo.addColumn("Cantidad");
+    modelo.addColumn("Pasillo");
 
     try {
         PreparedStatement pstmt = conexion.prepareStatement(consulta);
         pstmt.setInt(1, id); // Asigna el valor correcto del ID de la tienda
-        pstmt.setBoolean(2, true); // Asigna el valor booleano true para estado
+        pstmt.setBoolean(2, false); // Asigna el valor booleano true para estado
         ResultSet resultado = pstmt.executeQuery();
 
         while (resultado.next()) {
             String nombre = resultado.getString("nombreProducto");
             double precio = resultado.getDouble("precio");
             int cantidad = resultado.getInt("cantidad");
+            int pasillo = resultado.getInt("pasillo");
 
             // Agrega una fila al jTable con los datos del producto
-            modelo.addRow(new Object[]{nombre, precio, cantidad});
+            modelo.addRow(new Object[]{nombre, precio, cantidad, pasillo});
         }
 
         resultado.close();
@@ -79,14 +82,17 @@ private void cargarProductosTienda() {
         jTableProductos = new javax.swing.JTable();
 
         setBackground(new java.awt.Color(255, 255, 255));
+        setMaximumSize(new java.awt.Dimension(910, 680));
+        setMinimumSize(new java.awt.Dimension(910, 680));
+        setPreferredSize(new java.awt.Dimension(910, 680));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel3.setBackground(new java.awt.Color(22, 199, 154));
         jLabel3.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("PRODUCTO EN TIENDA");
+        jLabel3.setText("PRODUCTO SOLAMENTE EN ESTANTERÍA");
         jLabel3.setOpaque(true);
-        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 0, 440, 50));
+        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 0, 500, 50));
 
         jTableProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -101,7 +107,7 @@ private void cargarProductosTienda() {
         ));
         jScrollPane1.setViewportView(jTableProductos);
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 670, 300));
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 90, 670, 300));
     }// </editor-fold>//GEN-END:initComponents
 
 

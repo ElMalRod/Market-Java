@@ -58,8 +58,9 @@ public class ingresarProducto extends javax.swing.JPanel {
         jTextField1.setText("jTextField1");
 
         setBackground(new java.awt.Color(255, 255, 255));
-        setMaximumSize(new java.awt.Dimension(710, 510));
-        setMinimumSize(new java.awt.Dimension(710, 510));
+        setMaximumSize(new java.awt.Dimension(910, 680));
+        setMinimumSize(new java.awt.Dimension(910, 680));
+        setPreferredSize(new java.awt.Dimension(910, 680));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         txtNombre.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
@@ -71,52 +72,52 @@ public class ingresarProducto extends javax.swing.JPanel {
                 txtNombreActionPerformed(evt);
             }
         });
-        add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 120, 400, 33));
+        add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 120, 400, 33));
 
         jLabel2.setText("_____________________________________________________________");
-        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 140, 437, -1));
+        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 140, 437, -1));
 
         txtFabricante.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         txtFabricante.setBorder(null);
         txtFabricante.setOpaque(true);
-        add(txtFabricante, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 200, 400, 33));
+        add(txtFabricante, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 230, 400, 33));
 
         jLabel6.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(102, 102, 102));
         jLabel6.setText("Fabricante");
-        add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 170, -1, -1));
+        add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 200, -1, -1));
 
         jLabel7.setText("_____________________________________________________________");
-        add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 220, 437, -1));
+        add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 250, 437, -1));
 
         txtPrecio.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         txtPrecio.setBorder(null);
         txtPrecio.setOpaque(true);
-        add(txtPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 280, 400, 33));
+        add(txtPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 330, 400, 33));
 
         jLabel8.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(102, 102, 102));
         jLabel8.setText("Cantidad");
-        add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 330, -1, -1));
+        add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 390, -1, -1));
 
         jLabel9.setText("_____________________________________________________________");
-        add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 300, 437, -1));
+        add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 350, 437, -1));
 
         jLabel10.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(102, 102, 102));
         jLabel10.setText("Precio");
-        add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 250, -1, -1));
+        add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 300, -1, -1));
 
         jCantidad.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jCantidad.setBorder(null);
-        add(jCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 360, 80, -1));
+        add(jCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 420, 80, -1));
 
         jLabel3.setBackground(new java.awt.Color(22, 199, 154));
         jLabel3.setFont(new java.awt.Font("Roboto", 1, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("   NUEVO PRODUCTO");
         jLabel3.setOpaque(true);
-        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 0, 440, 50));
+        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 0, 440, 50));
 
         btnIngresar.setBackground(new java.awt.Color(25, 69, 107));
         btnIngresar.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
@@ -136,12 +137,12 @@ public class ingresarProducto extends javax.swing.JPanel {
                 btnIngresarMouseExited(evt);
             }
         });
-        add(btnIngresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 410, 150, 40));
+        add(btnIngresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 500, 150, 40));
 
         jLabel4.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(102, 102, 102));
         jLabel4.setText("Nombre ");
-        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 90, -1, -1));
+        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 90, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
 
@@ -160,7 +161,7 @@ public class ingresarProducto extends javax.swing.JPanel {
             pst.setDouble(3, Double.parseDouble(txtPrecio.getText())); // Se corrige aquí
             int cantidadSeleccionada = (int) jCantidad.getValue();
             pst.setInt(4, cantidadSeleccionada); // Se corrige aquí
-            pst.setBoolean(5, false);
+            pst.setBoolean(5, true);
             pst.setInt(6, 0);
             pst.setInt(7, id);
             

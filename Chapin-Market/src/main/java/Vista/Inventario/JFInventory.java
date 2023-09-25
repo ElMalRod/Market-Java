@@ -2,26 +2,35 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package Vista.Bodega;
+package Vista.Inventario;
 
 import com.coderhouse.chapin.market.Conexion;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Image;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author emili_zxg0ruq
  */
-public class JFBodega extends javax.swing.JFrame {
+public class JFInventory extends javax.swing.JFrame {
 
-    public int id;
+    /**
+     * Creates new form JFInventory
+     */
+        public int id;
+
+    public JFInventory(int id) {
+        initComponents();
+        setLocationRelativeTo(null);//pone la pantalla en el centro
+         //MostrarLogo();
+        this.id = id;
+        
+    }
 
     public int getId() {
         return id;
@@ -31,60 +40,9 @@ public class JFBodega extends javax.swing.JFrame {
         this.id = id;
     }
 
-    public JFBodega(int id) {
-       
+
+    public JFInventory() {
         initComponents();
-        setLocationRelativeTo(null);//pone la pantalla en el centro
-         //MostrarLogo();
-        this.id = id;
-       
-    }
-
-    public void MostrarLogo() {
-        ImageIcon iconLogo = new ImageIcon(getClass().getResource("/Images/4.png"));
-        Image image = iconLogo.getImage();
-        Image scaledImage = image.getScaledInstance(lbLogo.getWidth(), lbLogo.getHeight(), Image.SCALE_SMOOTH);
-        ImageIcon scaledIcon = new ImageIcon(scaledImage);
-        lbLogo.setIcon(scaledIcon);
-
-    }
-
-    public void setUsuarioYRol(String nombreUsuario, String rol) {
-        btUser.setText(rol + " - " + nombreUsuario);
-        String nombreTienda = obtenerNombreTienda();
-        lblNombreTienda.setText("Tienda: " + nombreTienda); // Muestra el nombre de la tienda en un JLabel
-    }
-
-    private String obtenerNombreTienda() {
-        Connection conexion = new Conexion().establecerConexion();
-        String nombreTienda = "";
-
-        try {
-            String consultaTienda = "SELECT nombreTienda FROM ControlEmpresas.Tienda WHERE idTienda = ?";
-            PreparedStatement pstmtTienda = conexion.prepareStatement(consultaTienda);
-            pstmtTienda.setInt(1, id);
-            ResultSet resultadoTienda = pstmtTienda.executeQuery();
-
-            if (resultadoTienda.next()) {
-                nombreTienda = resultadoTienda.getString("nombreTienda");
-            }
-
-            resultadoTienda.close();
-            pstmtTienda.close();
-            conexion.close();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Error al consultar la tienda: " + e.getMessage());
-        }
-
-        return nombreTienda;
-    }
-
-    /**
-     * Creates new form JFBodega
-     */
-    public JFBodega() {
-        initComponents();
-        System.out.println("KDFJHKDJA " + id);
     }
 
     /**
@@ -107,10 +65,10 @@ public class JFBodega extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setBackground(new java.awt.Color(255, 255, 255));
+        setMaximumSize(new java.awt.Dimension(1100, 710));
         setMinimumSize(new java.awt.Dimension(1100, 710));
         setPreferredSize(new java.awt.Dimension(1100, 710));
-        setSize(new java.awt.Dimension(1100, 710));
+        setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(25, 69, 107));
@@ -140,7 +98,7 @@ public class JFBodega extends javax.swing.JFrame {
         btIngresar.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         btIngresar.setForeground(new java.awt.Color(255, 255, 255));
         btIngresar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btIngresar.setText("INGRESAR");
+        btIngresar.setText("TRASLADAR");
         btIngresar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btIngresar.setOpaque(true);
         btIngresar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -208,6 +166,45 @@ public class JFBodega extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+ public void setUsuarioYRol(String nombreUsuario, String rol) {
+        btUser.setText(rol + " - " + nombreUsuario);
+        String nombreTienda = obtenerNombreTienda();
+        lblNombreTienda.setText("Tienda: " + nombreTienda); // Muestra el nombre de la tienda en un JLabel
+    }
+
+    private String obtenerNombreTienda() {
+        Connection conexion = new Conexion().establecerConexion();
+        String nombreTienda = "";
+
+        try {
+            String consultaTienda = "SELECT nombreTienda FROM ControlEmpresas.Tienda WHERE idTienda = ?";
+            PreparedStatement pstmtTienda = conexion.prepareStatement(consultaTienda);
+            pstmtTienda.setInt(1, id);
+            ResultSet resultadoTienda = pstmtTienda.executeQuery();
+
+            if (resultadoTienda.next()) {
+                nombreTienda = resultadoTienda.getString("nombreTienda");
+            }
+
+            resultadoTienda.close();
+            pstmtTienda.close();
+            conexion.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error al consultar la tienda: " + e.getMessage());
+        }
+
+        return nombreTienda;
+    }
+    private void btnVerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVerMouseClicked
+        // TODO add your handling code here:
+        VerInventario verProductoPanel = new VerInventario(id);
+        verProductoPanel.setSize(919, 680);
+        verProductoPanel.setLocation(0, 0);
+        content.removeAll();
+        content.add(verProductoPanel, BorderLayout.CENTER);
+        content.revalidate();
+        content.repaint();
+    }//GEN-LAST:event_btnVerMouseClicked
 
     private void btnVerMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVerMouseEntered
         // TODO add your handling code here:
@@ -219,6 +216,17 @@ public class JFBodega extends javax.swing.JFrame {
         btnVer.setBackground(new Color(25, 69, 107));
     }//GEN-LAST:event_btnVerMouseExited
 
+    private void btIngresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btIngresarMouseClicked
+        // TODO add your handling code here:
+        trasladarProducto p = new trasladarProducto(id);
+        p.setSize(919, 680);
+        p.setLocation(0, 0);
+        content.removeAll();
+        content.add(p, BorderLayout.CENTER);
+        content.revalidate();
+        content.repaint();
+    }//GEN-LAST:event_btIngresarMouseClicked
+
     private void btIngresarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btIngresarMouseEntered
         // TODO add your handling code here:
         btIngresar.setBackground(new Color(22, 199, 154));
@@ -228,28 +236,6 @@ public class JFBodega extends javax.swing.JFrame {
         // TODO add your handling code here:
         btIngresar.setBackground(new Color(25, 69, 107));
     }//GEN-LAST:event_btIngresarMouseExited
-
-    private void btnVerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVerMouseClicked
-        // TODO add your handling code here:
-        VerProducto verProductoPanel = new VerProducto(id);
-        verProductoPanel.setSize(919, 680);
-        verProductoPanel.setLocation(0, 0);
-        content.removeAll();
-        content.add(verProductoPanel, BorderLayout.CENTER);
-        content.revalidate();
-        content.repaint();
-    }//GEN-LAST:event_btnVerMouseClicked
-
-    private void btIngresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btIngresarMouseClicked
-        // TODO add your handling code here:
-        ingresarProducto p = new ingresarProducto(id);
-        p.setSize(919, 680);
-        p.setLocation(0, 0);
-        content.removeAll();
-        content.add(p, BorderLayout.CENTER);
-        content.revalidate();
-        content.repaint();
-    }//GEN-LAST:event_btIngresarMouseClicked
 
     private void btUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btUserMouseClicked
         // TODO add your handling code here:
@@ -261,7 +247,7 @@ public class JFBodega extends javax.swing.JFrame {
 
     private void btUserMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btUserMouseExited
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_btUserMouseExited
 
     /**
@@ -281,20 +267,20 @@ public class JFBodega extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JFBodega.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFInventory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JFBodega.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFInventory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JFBodega.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFInventory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JFBodega.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFInventory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JFBodega().setVisible(true);
+                new JFInventory().setVisible(true);
             }
         });
     }
