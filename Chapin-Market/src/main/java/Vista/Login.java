@@ -191,6 +191,7 @@ public class Login extends javax.swing.JFrame {
         }
 
         String username = txtUsuario.getText();
+        System.out.println("user "+username);
         String password = txtPass.getText();
 
         Connection conexion = new Conexion().establecerConexion();
@@ -201,9 +202,11 @@ public class Login extends javax.swing.JFrame {
             PreparedStatement pstmtUsuario = conexion.prepareStatement(consultaUsuario);
             pstmtUsuario.setString(1, username);
             ResultSet resultadoUsuario = pstmtUsuario.executeQuery();
+            System.out.println("otro "+resultadoUsuario);
 
             if (resultadoUsuario.next()) {
                 String contraseñaAlmacenada = resultadoUsuario.getString("password");
+                System.out.println("contraseña "+contraseñaAlmacenada );
                 if (password.equals(contraseñaAlmacenada)) {
                     String rol = resultadoUsuario.getString("rol");
                     int id = resultadoUsuario.getInt("idTienda");
@@ -216,7 +219,7 @@ public class Login extends javax.swing.JFrame {
                         //adminFrame.setUsuarioYRol(nombreUsuario, rol); // Pasa el nombre de usuario y el rol
                         adminFrame.setVisible(true);
                     } else if ("Cajero".equals(rol)) {
-                        JFCajero cajeroFrame = new JFCajero();
+                        JFCajero cajeroFrame = new JFCajero(id);
                         cajeroFrame.setUsuarioYRol(nombreUsuario, rol); // Pasa el nombre de usuario y el rol
                         cajeroFrame.setVisible(true);
                     } else if ("Bodega".equals(rol)) {

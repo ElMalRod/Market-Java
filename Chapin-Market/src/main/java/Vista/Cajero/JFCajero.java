@@ -55,6 +55,9 @@ public class JFCajero extends javax.swing.JFrame {
         btIngresar2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(1240, 790));
+        setMinimumSize(new java.awt.Dimension(1240, 790));
+        setPreferredSize(new java.awt.Dimension(1240, 790));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         btUser.setBackground(new java.awt.Color(255, 255, 255));
@@ -77,23 +80,27 @@ public class JFCajero extends javax.swing.JFrame {
         getContentPane().add(btUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 0, 250, 30));
 
         content.setBackground(new java.awt.Color(255, 255, 255));
+        content.setMaximumSize(new java.awt.Dimension(1350, 710));
+        content.setMinimumSize(new java.awt.Dimension(1350, 710));
+        content.setPreferredSize(new java.awt.Dimension(1350, 710));
+        content.setRequestFocusEnabled(false);
 
         javax.swing.GroupLayout contentLayout = new javax.swing.GroupLayout(content);
         content.setLayout(contentLayout);
         contentLayout.setHorizontalGroup(
             contentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 910, Short.MAX_VALUE)
+            .addGap(0, 1350, Short.MAX_VALUE)
         );
         contentLayout.setVerticalGroup(
             contentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 680, Short.MAX_VALUE)
+            .addGap(0, 750, Short.MAX_VALUE)
         );
 
-        getContentPane().add(content, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 40, 910, 680));
+        getContentPane().add(content, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 40, 1200, 750));
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setOpaque(true);
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 0, 660, 40));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 0, 800, 40));
 
         jLabel2.setBackground(new java.awt.Color(17, 105, 142));
         jLabel2.setOpaque(true);
@@ -172,7 +179,7 @@ public class JFCajero extends javax.swing.JFrame {
         });
         jPanel1.add(btnVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 180, 192, 50));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 190, 710));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 190, 790));
 
         btIngresar2.setBackground(new java.awt.Color(25, 69, 107));
         btIngresar2.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
@@ -242,7 +249,7 @@ public class JFCajero extends javax.swing.JFrame {
     private void btnModificarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnModificarMouseClicked
         // TODO add your handling code here:
         Modificar p = new Modificar(id);
-        p.setSize(910, 680);
+        p.setSize(1200, 710);
         p.setLocation(0, 0);
         content.removeAll();
         content.add(p, BorderLayout.CENTER);
@@ -263,7 +270,7 @@ public class JFCajero extends javax.swing.JFrame {
     private void btnVentaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVentaMouseClicked
         // TODO add your handling code here:
         PanelVenta  p= new PanelVenta(id);
-        p.setSize(910, 680);
+      p.setSize(1350, 710);
         p.setLocation(0, 0);
         content.removeAll();
         content.add(p, BorderLayout.CENTER);
@@ -284,7 +291,7 @@ public class JFCajero extends javax.swing.JFrame {
     private void btnClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnClientesMouseClicked
         // TODO add your handling code here:
         PanelClientes p = new PanelClientes(id);
-        p.setSize(919, 680);
+        p.setSize(1250, 720);
         p.setLocation(0, 0);
         content.removeAll();
         content.add(p, BorderLayout.CENTER);

@@ -50,16 +50,18 @@ CREATE TABLE ControlPersonal.Empleado(
     FOREIGN KEY (idTienda) REFERENCES ControlEmpresas.Tienda(idTienda)
 );
 
-CREATE TABLE ControlPersonal.Cliente(
-    nitCliente SERIAL PRIMARY KEY,
+CREATE TABLE ControlPersonal.Cliente (
+    idCliente SERIAL PRIMARY KEY,
+    nitCliente VARCHAR(15) UNIQUE NOT NULL,
     nombreCliente VARCHAR(50) NOT NULL,
     telefono VARCHAR(10) NOT NULL,
     dpi VARCHAR(13) NOT NULL,
     tarjeta VARCHAR(20),
     puntos INT,
-    descuento DECIMAL(10,2),
+    descuento DECIMAL(10, 2),
     direccion VARCHAR(50) NOT NULL
 );
+
 
 CREATE TABLE ControlInventario.Inventario(
     idInventario SERIAL PRIMARY KEY,
@@ -72,18 +74,30 @@ CREATE TABLE ControlInventario.Inventario(
 
 
 CREATE TABLE ControlVentas.Venta(
-    idVenta SERIAL PRIMARY KEY,
+    idVenta SERIAL NOT NULL,
     fecha DATE NOT NULL,
     total DECIMAL(10,2) NOT NULL,
     idEmpleado INT NOT NULL,
     idProducto INT NOT NULL,
-    nitCliente INT NOT NULL,
+    cantidad INT NOT NULL,
+    nitCliente VARCHAR(15)NOT NULL,
     idTienda INT NOT NULL,
-    FOREIGN KEY (idEmpleado) REFERENCES ControlPersonal.Empleado(idEmpleado),
+    PRIMARY KEY (idVenta),
+    FOREIGN KEY (idEmpleado) REFERENCES ControlPersonal.Empleado(idEmpleado) ON DELETE CASCADE,
     FOREIGN KEY (idProducto) REFERENCES ControlEmpresas.Producto(idProducto),
     FOREIGN KEY (nitCliente) REFERENCES ControlPersonal.Cliente(nitCliente),
     FOREIGN KEY (idTienda) REFERENCES ControlEmpresas.Tienda(idTienda)
 
+);
+
+CREATE TABLE ControlVentas.DetalleVenta(
+    idDetalleVenta SERIAL PRIMARY KEY,
+    cantidad INT NOT NULL,
+    subtotal DECIMAL(10,2) NOT NULL,
+    idVenta INT NOT NULL,
+    idProducto INT NOT NULL,
+    FOREIGN KEY (idVenta) REFERENCES ControlVentas.Venta(idVenta),
+    FOREIGN KEY (idProducto) REFERENCES ControlEmpresas.Producto(idProducto)
 );
 INSERT INTO ControlEmpresas.Tienda(nombreTienda, direccion, telefono) VALUES ('Sucursal Centro', 'Direccion1', '12345678');
 INSERT INTO ControlEmpresas.Tienda(nombreTienda, direccion, telefono) VALUES ('Sucursal Norte', 'Direccion2', '12345678');
@@ -104,5 +118,8 @@ INSERT INTO ControlPersonal.Empleado(nombreEmpleado, telefono, rol, dpi, usernam
 INSERT INTO ControlPersonal.Empleado(nombreEmpleado, telefono, rol, dpi, username, password, idTienda,cajas) VALUES ('Pedro', '12345678', 'Bodega', '1234567891011', 'pedro', '123456', 3,NULL);
 INSERT INTO ControlPersonal.Empleado(nombreEmpleado, telefono, rol, dpi, username, password, idTienda,cajas) VALUES ('Maria', '12345678', 'Inventario', '1234567891011', 'maria', '123456', 3,NULL);
 
-DELETE FROM ControlEmpresas.Tienda WHERE idTienda = 1;
-DELETE FROM ControlEmpresas.Producto WHERE idProducto = 1;
+
+
+INSERT INTO ControlPersonal.Cliente (nitCliente, nombreCliente, telefono, dpi, tarjeta, puntos, descuento, direccion) VALUES ('12345', 'Ale', '12345678', '1234567891011', '1234567891011', 0, 0, 'Direccion1');
+INSERT INTO ControlPersonal.Cliente (nitCliente, nombreCliente, telefono, dpi, tarjeta, puntos, descuento, direccion) VALUES ('123', 'Alan', '12345678', '1234567891012', '1234567891012', 0, 0, 'Direccion2');
+

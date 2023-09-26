@@ -4,6 +4,15 @@
  */
 package Vista.Cajero;
 
+import Vista.Inventario.trasladarProducto;
+import com.coderhouse.chapin.market.Conexion;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author emili_zxg0ruq
@@ -14,10 +23,11 @@ public class Modificar extends javax.swing.JPanel {
      * Creates new form Modificar
      */
     public int id;
-
+    Connection conexion = new Conexion().establecerConexion();
     public Modificar(int id) {
         this.id = id;
         initComponents();
+        agregarDatosSelect();
     }
 
     public Modificar() {
@@ -33,19 +43,46 @@ public class Modificar extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jOpciones = new javax.swing.JComboBox<>();
+
+        jOpciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(83, 83, 83)
+                .addComponent(jOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(96, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(84, 84, 84)
+                .addComponent(jOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(194, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+ public void agregarDatosSelect() {
 
+        String sql = "SELECT nombreProducto FROM ControlEmpresas.Producto WHERE idTienda = ? AND estado = true";
+        PreparedStatement pst;
+        try {
+            pst = conexion.prepareStatement(sql);
+            pst.setInt(1, id);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                String nombreProducto = rs.getString("nombreProducto");
+                jOpciones.addItem(nombreProducto);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(trasladarProducto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> jOpciones;
     // End of variables declaration//GEN-END:variables
 }
