@@ -78,10 +78,10 @@ CREATE TABLE ControlVentas.Venta(
     fecha DATE NOT NULL,
     total DECIMAL(10,2) NOT NULL,
     idEmpleado INT NOT NULL,
-    idProducto INT NOT NULL,
-    cantidad INT NOT NULL,
+    idProducto INT,
+    cantidad INT,
     nitCliente VARCHAR(15)NOT NULL,
-    idTienda INT NOT NULL,
+    idTienda INT ,
     PRIMARY KEY (idVenta),
     FOREIGN KEY (idEmpleado) REFERENCES ControlPersonal.Empleado(idEmpleado) ON DELETE CASCADE,
     FOREIGN KEY (idProducto) REFERENCES ControlEmpresas.Producto(idProducto),
@@ -90,15 +90,16 @@ CREATE TABLE ControlVentas.Venta(
 
 );
 
-CREATE TABLE ControlVentas.DetalleVenta(
-    idDetalleVenta SERIAL PRIMARY KEY,
-    cantidad INT NOT NULL,
-    subtotal DECIMAL(10,2) NOT NULL,
-    idVenta INT NOT NULL,
-    idProducto INT NOT NULL,
-    FOREIGN KEY (idVenta) REFERENCES ControlVentas.Venta(idVenta),
+CREATE TABLE ControlVentas.DetalleVenta (
+    idDetalleVenta SERIAL NOT NULL,
+    idVenta INT ,
+    idProducto INT,
+    cantidad INT,
+    PRIMARY KEY (idDetalleVenta),
+    FOREIGN KEY (idVenta) REFERENCES ControlVentas.Venta(idVenta) ON DELETE CASCADE,
     FOREIGN KEY (idProducto) REFERENCES ControlEmpresas.Producto(idProducto)
 );
+
 INSERT INTO ControlEmpresas.Tienda(nombreTienda, direccion, telefono) VALUES ('Sucursal Centro', 'Direccion1', '12345678');
 INSERT INTO ControlEmpresas.Tienda(nombreTienda, direccion, telefono) VALUES ('Sucursal Norte', 'Direccion2', '12345678');
 INSERT INTO ControlEmpresas.Tienda(nombreTienda, direccion, telefono) VALUES ('Sucursal Sur', 'Direccion3', '12345678');
@@ -118,8 +119,4 @@ INSERT INTO ControlPersonal.Empleado(nombreEmpleado, telefono, rol, dpi, usernam
 INSERT INTO ControlPersonal.Empleado(nombreEmpleado, telefono, rol, dpi, username, password, idTienda,cajas) VALUES ('Pedro', '12345678', 'Bodega', '1234567891011', 'pedro', '123456', 3,NULL);
 INSERT INTO ControlPersonal.Empleado(nombreEmpleado, telefono, rol, dpi, username, password, idTienda,cajas) VALUES ('Maria', '12345678', 'Inventario', '1234567891011', 'maria', '123456', 3,NULL);
 
-
-
-INSERT INTO ControlPersonal.Cliente (nitCliente, nombreCliente, telefono, dpi, tarjeta, puntos, descuento, direccion) VALUES ('12345', 'Ale', '12345678', '1234567891011', '1234567891011', 0, 0, 'Direccion1');
-INSERT INTO ControlPersonal.Cliente (nitCliente, nombreCliente, telefono, dpi, tarjeta, puntos, descuento, direccion) VALUES ('123', 'Alan', '12345678', '1234567891012', '1234567891012', 0, 0, 'Direccion2');
-
+INSERT INTO ControlVentas.Venta(fecha, total, idEmpleado, idProducto, cantidad, nitCliente, idTienda) VALUES ('2020-01-01', 10, 2, 2, 1, '123', 1);

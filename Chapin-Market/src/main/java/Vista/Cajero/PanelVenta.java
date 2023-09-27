@@ -4,7 +4,11 @@
  */
 package Vista.Cajero;
 
+import Controlador.VentaDAO;
+import Modelo.CustomTableModel;
+import Modelo.DetalleVenta;
 import Modelo.Producto;
+import Modelo.Venta;
 import Vista.Inventario.trasladarProducto;
 import com.coderhouse.chapin.market.Conexion;
 import java.awt.BorderLayout;
@@ -18,6 +22,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,15 +46,19 @@ public class PanelVenta extends javax.swing.JPanel {
      * Creates new form PanelVenta
      */
     public int id;
-    private List<Producto> productosDisponibles; // Lista de productos disponibles
-    private List<Producto> productosEnVenta; // Lista de productos en la venta actual
+    CustomTableModel tableModel = new CustomTableModel(new Object[]{"Nombre", "Cantidad", "Precio"}, 0);
+    private double totalVenta = 0.0;
+    private VentaDAO ventaDAO;
+
     Connection conexion = new Conexion().establecerConexion();
 
     public PanelVenta(int id) {
         this.id = id;
         initComponents();
         agregarDatosSelect();
+        jTableProductos.setModel(tableModel);
 
+        ventaDAO = new VentaDAO(conexion);
     }
     // Método para cargar la lista de productos disponibles en la tienda
 
@@ -96,30 +105,99 @@ public class PanelVenta extends javax.swing.JPanel {
     }
 
     public boolean cantidadDisponible() {
-        String sql = "SELECT cantidad FROM ControlEmpresas.Producto WHERE idTienda = ? AND idProducto = ?";
+        int item = obtenerItem();
+        if (item != 0) {
+            String sql = "SELECT cantidad FROM ControlEmpresas.Producto WHERE idTienda = ? AND idProducto = ?";
+            PreparedStatement pst;
+            try {
+                pst = conexion.prepareStatement(sql);
+                pst.setInt(1, id);
+                pst.setInt(2, item);
+                ResultSet rs = pst.executeQuery();
+                if (rs.next()) {
+                    int aux = rs.getInt("cantidad");
+                    int cantidadSeleccionada = (int) jCantidadProd.getValue();
+                    return aux >= cantidadSeleccionada;
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(trasladarProducto.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return false;
+    }
+
+    public double obtenerPrecioProducto() {
+        String sql = "SELECT precio FROM ControlEmpresas.Producto WHERE idTienda = ? AND idProducto = ?";
         PreparedStatement pst;
         try {
             pst = conexion.prepareStatement(sql);
             pst.setInt(1, id);
             pst.setInt(2, obtenerItem());
             ResultSet rs = pst.executeQuery();
+
             // Mueve el cursor al primer registro (si existe)
             if (rs.next()) {
-                int aux = rs.getInt("cantidad");
-                System.out.println("AUX " + aux);
-                int cantidadSeleccionada = (int) jCantidadProd.getValue();
-                System.out.println("select " + cantidadSeleccionada);
-                if (aux > cantidadSeleccionada) {
-                    return false;
-                } else {
-
-                    return true;
-                }
+                double precio = rs.getDouble("precio");
+                return precio;
             }
         } catch (SQLException ex) {
             Logger.getLogger(trasladarProducto.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
+        return 0.0; // En caso de no encontrar el precio, retorna un valor predeterminado
+    }
+
+    public void restarCantidadProducto(String nombreProducto, int cantidadSeleccionada) {
+        String sql = "UPDATE ControlEmpresas.Producto SET cantidad = cantidad - ? WHERE idTienda = ? AND nombreProducto = ?";
+        PreparedStatement pst;
+        try {
+            pst = conexion.prepareStatement(sql);
+            pst.setInt(1, cantidadSeleccionada);
+            pst.setInt(2, id);
+            pst.setString(3, nombreProducto);
+            pst.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(trasladarProducto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void mostrarTotalDeVenta() {
+
+        lbTotal.setText("Q." + totalVenta);
+    }
+
+    private int obtenerIdProductoPorNombre(String nombreProducto) {
+        // Implementa la lógica para obtener el ID del producto según su nombre
+        // Puedes hacer una consulta a la base de datos aquí
+        // Debes retornar el ID del producto encontrado o -1 si no se encuentra
+        // Por ejemplo:
+        int idProducto = -1;
+        String sql = "SELECT idProducto FROM ControlEmpresas.Producto WHERE nombreProducto = ?";
+        try {
+            PreparedStatement pstmt = conexion.prepareStatement(sql);
+            pstmt.setString(1, nombreProducto);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                idProducto = rs.getInt("idProducto");
+            }
+            rs.close();
+            pstmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(PanelVenta.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return idProducto;
+    }
+
+    private void reiniciarVenta() {
+        // Limpia los campos y la tabla para una nueva venta
+        txtNit.setText("");
+        txtNombre.setText("");
+        txtTelefono.setText("");
+        txtPuntos.setText("");
+        txtTarjeta.setText("");
+        txtDireccion.setText("");
+        lbTotal.setText("Q.0.0");
+        tableModel.setRowCount(0); // Limpia la tabla
+        totalVenta = 0.0; // Restablece el total de la venta
     }
 
     /**
@@ -458,8 +536,10 @@ public class PanelVenta extends javax.swing.JPanel {
                     .addComponent(jSeparator4)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel13)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 576, Short.MAX_VALUE))
+                        .addGap(0, 464, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 570, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -620,9 +700,26 @@ public class PanelVenta extends javax.swing.JPanel {
 
     private void btnIngresarProdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIngresarProdMouseClicked
         // TODO add your handling code here:
-        ////aquiiii
-        if (cantidadDisponible() == true) {
-            System.out.println("disponible");
+        if (cantidadDisponible()) {
+            String nombreProducto = jProducto.getSelectedItem().toString();
+            int cantidadSeleccionada = (int) jCantidadProd.getValue();
+            double precioProducto = obtenerPrecioProducto();
+            double totalProducto = cantidadSeleccionada * precioProducto;
+
+            // Restar la cantidad seleccionada del producto en la base de datos
+            restarCantidadProducto(nombreProducto, cantidadSeleccionada);
+
+            // Agregar el producto y su total a la tabla
+            Object[] rowData = {nombreProducto, cantidadSeleccionada, totalProducto};
+            tableModel.addRow(rowData);
+
+            // Actualizar el total de la venta (sumar el total del producto)
+            totalVenta += totalProducto;
+
+            // Mostrar el total de la venta en otro lugar (si lo deseas)
+            mostrarTotalDeVenta();
+
+            System.out.println("Producto confirmado: " + nombreProducto);
         } else {
             System.out.println("No disponible");
         }
@@ -731,10 +828,52 @@ public class PanelVenta extends javax.swing.JPanel {
 
     private void btnIngresarClienteMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIngresarClienteMouseExited
         // TODO add your handling code here:
+
     }//GEN-LAST:event_btnIngresarClienteMouseExited
 
     private void btnConfirmarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConfirmarMouseClicked
         // TODO add your handling code here:
+        String nitCliente = txtNit.getText().trim();
+
+        // Verifica que se haya ingresado un NIT válido
+        if (!nitCliente.isEmpty()) {
+            // Crea una instancia de la clase Venta con los datos de la venta
+            Venta venta = new Venta(0, id, nitCliente, new Date(), totalVenta);
+
+            // Crea una lista para almacenar los detalles de la venta
+            List<DetalleVenta> detallesVenta = new ArrayList<>();
+
+            // Recorre las filas de la tabla jTableProductos para obtener los detalles
+            for (int i = 0; i < tableModel.getRowCount(); i++) {
+                String nombreProducto = tableModel.getValueAt(i, 0).toString();
+                int cantidad = Integer.parseInt(tableModel.getValueAt(i, 1).toString());
+                double precioUnitario = Double.parseDouble(tableModel.getValueAt(i, 2).toString()) / cantidad;
+
+                // Obtén el ID del producto según el nombre
+                int idProducto = obtenerIdProductoPorNombre(nombreProducto);
+
+                if (idProducto != -1) { // Verifica que se haya obtenido un ID válido
+                    // Crea un objeto DetalleVenta y agrégalo a la lista
+                    DetalleVenta detalle = new DetalleVenta(0, idProducto, cantidad, precioUnitario, nombreProducto);
+                    detallesVenta.add(detalle);
+                } else {
+                    JOptionPane.showMessageDialog(this, "El producto '" + nombreProducto + "' no se encuentra en la base de datos.");
+                }
+            }
+
+            try {
+                // Llama al método para insertar la venta en la base de datos
+                ventaDAO.insertarVenta(venta, detallesVenta);
+
+                // Restablece los campos y la tabla para una nueva venta
+                reiniciarVenta();
+                JOptionPane.showMessageDialog(this, "Venta registrada con éxito.");
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Error al registrar la venta: " + e.getMessage());
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Ingrese un NIT válido del cliente.");
+        }
     }//GEN-LAST:event_btnConfirmarMouseClicked
 
     private void btnConfirmarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConfirmarMouseEntered

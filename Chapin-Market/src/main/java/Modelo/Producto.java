@@ -9,34 +9,50 @@ package Modelo;
  * @author emili_zxg0ruq
  */
 public class Producto {
-    private int id;
-    private String nombre;
+
+    private int idProducto;
+    private String nombreProducto;
+    private String fabricante;
     private double precio;
     private int cantidad;
+    private boolean estado;
+    private int pasillo;
+    private int idTienda;
 
-    public Producto(int id, String nombre, double precio, int cantidad) {
-        this.id = id;
-        this.nombre = nombre;
+    // Constructor
+    public Producto(int idProducto, String nombreProducto, String fabricante, double precio, int cantidad, boolean estado, int pasillo, int idTienda) {
+        this.idProducto = idProducto;
+        this.nombreProducto = nombreProducto;
+        this.fabricante = fabricante;
         this.precio = precio;
         this.cantidad = cantidad;
+        this.estado = estado;
+        this.pasillo = pasillo;
+        this.idTienda = idTienda;
     }
 
-    // Getters y setters para los atributos
-
-    public int getId() {
-        return id;
+    public int getIdProducto() {
+        return idProducto;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdProducto(int idProducto) {
+        this.idProducto = idProducto;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getNombreProducto() {
+        return nombreProducto;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombreProducto(String nombreProducto) {
+        this.nombreProducto = nombreProducto;
+    }
+
+    public String getFabricante() {
+        return fabricante;
+    }
+
+    public void setFabricante(String fabricante) {
+        this.fabricante = fabricante;
     }
 
     public double getPrecio() {
@@ -53,6 +69,30 @@ public class Producto {
 
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public boolean isEstado() {
+        return estado;
+    }
+
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
+
+    public int getPasillo() {
+        return pasillo;
+    }
+
+    public void setPasillo(int pasillo) {
+        this.pasillo = pasillo;
+    }
+
+    public int getIdTienda() {
+        return idTienda;
+    }
+
+    public void setIdTienda(int idTienda) {
+        this.idTienda = idTienda;
     }
 
 }
