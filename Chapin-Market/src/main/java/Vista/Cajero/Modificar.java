@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -22,18 +23,41 @@ public class Modificar extends javax.swing.JPanel {
     /**
      * Creates new form Modificar
      */
-    public int id;
+    public int idTienda;
+    public int idCliente;
     Connection conexion = new Conexion().establecerConexion();
     public Modificar(int id) {
-        this.id = id;
+        this.idTienda = id;
         initComponents();
-        agregarDatosSelect();
+        txtTarjeta.addItem("comun");
+        txtTarjeta.addItem("oro");
+        txtTarjeta.addItem("platino");
+        txtTarjeta.addItem("diamante");
+        txtTarjeta.addItem("ninguna");
     }
 
     public Modificar() {
         initComponents();
     }
-
+    private int getTarjeta(String tarjeta){
+        
+        if (tarjeta.equals("comun")) {
+            return 0;
+        }
+        if (tarjeta.equals("oro")) {
+            return 1;
+        }
+        if (tarjeta.equals("platino")) {
+            return 2;
+        }
+        if (tarjeta.equals("diamante")) {
+            return 3;
+        }
+        if (tarjeta.equals("ninguna")) {
+            return 4;
+        }
+        return 0;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -43,46 +67,410 @@ public class Modificar extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jOpciones = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        txtbuscador = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        txtNit = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jLabel7 = new javax.swing.JLabel();
+        txtNombre = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        txtTelefono = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        txtPuntos = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        txtDireccion = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        btbuscar = new javax.swing.JLabel();
+        btnIngresarCliente = new javax.swing.JLabel();
+        txtTarjeta = new javax.swing.JComboBox<>();
+        jLabel16 = new javax.swing.JLabel();
+        txtDPI = new javax.swing.JTextField();
+        jLabel17 = new javax.swing.JLabel();
 
-        jOpciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        setBackground(new java.awt.Color(255, 255, 255));
+        setMaximumSize(new java.awt.Dimension(1200, 710));
+        setMinimumSize(new java.awt.Dimension(1200, 710));
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(83, 83, 83)
-                .addComponent(jOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(96, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(84, 84, 84)
-                .addComponent(jOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(194, Short.MAX_VALUE))
-        );
-    }// </editor-fold>//GEN-END:initComponents
- public void agregarDatosSelect() {
+        jLabel4.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel4.setText("BUSCAR CLIENTE POR NIT");
+        add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, -1, -1));
 
-        String sql = "SELECT nombreProducto FROM ControlEmpresas.Producto WHERE idTienda = ? AND estado = true";
-        PreparedStatement pst;
-        try {
-            pst = conexion.prepareStatement(sql);
-            pst.setInt(1, id);
-            ResultSet rs = pst.executeQuery();
-            while (rs.next()) {
-                String nombreProducto = rs.getString("nombreProducto");
-                jOpciones.addItem(nombreProducto);
+        txtbuscador.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        txtbuscador.setToolTipText("");
+        txtbuscador.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 2, true));
+        txtbuscador.setOpaque(true);
+        txtbuscador.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtbuscadorActionPerformed(evt);
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(trasladarProducto.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        });
+        add(txtbuscador, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, 320, 30));
 
-    }
+        jLabel5.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel5.setText("NIT:");
+        add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 140, 40, -1));
+
+        txtNit.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        txtNit.setToolTipText("");
+        txtNit.setBorder(null);
+        txtNit.setOpaque(true);
+        txtNit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNitActionPerformed(evt);
+            }
+        });
+        add(txtNit, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 160, 100, 33));
+
+        jLabel3.setText("_____________");
+        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 180, 110, -1));
+        add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 1020, 10));
+
+        jLabel7.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel7.setText("NOMBRE:");
+        add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 140, -1, -1));
+
+        txtNombre.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        txtNombre.setToolTipText("");
+        txtNombre.setBorder(null);
+        txtNombre.setOpaque(true);
+        txtNombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNombreActionPerformed(evt);
+            }
+        });
+        add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 160, 190, 33));
+
+        jLabel8.setText("___________________________");
+        add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 180, 260, -1));
+
+        jLabel9.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel9.setText("TELÉFONO:");
+        add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 140, -1, -1));
+
+        txtTelefono.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        txtTelefono.setToolTipText("");
+        txtTelefono.setBorder(null);
+        txtTelefono.setOpaque(true);
+        txtTelefono.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTelefonoActionPerformed(evt);
+            }
+        });
+        add(txtTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 160, 170, 33));
+
+        jLabel10.setText("________________________");
+        add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 180, 120, -1));
+
+        jLabel11.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel11.setText("PUNTOS:");
+        add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 370, -1, -1));
+
+        txtPuntos.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        txtPuntos.setToolTipText("");
+        txtPuntos.setBorder(null);
+        txtPuntos.setOpaque(true);
+        txtPuntos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPuntosActionPerformed(evt);
+            }
+        });
+        add(txtPuntos, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 390, 100, 33));
+
+        jLabel12.setText("_____________");
+        add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 410, 110, -1));
+
+        jLabel6.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel6.setText("DIRECCIÓN:");
+        add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 260, -1, -1));
+
+        txtDireccion.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        txtDireccion.setToolTipText("");
+        txtDireccion.setBorder(null);
+        txtDireccion.setOpaque(true);
+        add(txtDireccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 280, 220, 33));
+
+        jLabel2.setText("_________________________________________");
+        jLabel2.setToolTipText("");
+        add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 300, -1, -1));
+
+        jLabel18.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        jLabel18.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel18.setText("TARJETA:");
+        add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 370, -1, -1));
+
+        btbuscar.setBackground(new java.awt.Color(17, 105, 142));
+        btbuscar.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        btbuscar.setForeground(new java.awt.Color(255, 255, 255));
+        btbuscar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btbuscar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btbuscar.setMaximumSize(new java.awt.Dimension(50, 50));
+        btbuscar.setMinimumSize(new java.awt.Dimension(50, 50));
+        btbuscar.setOpaque(true);
+        btbuscar.setPreferredSize(new java.awt.Dimension(50, 50));
+        btbuscar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btbuscarMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btbuscarMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btbuscarMouseExited(evt);
+            }
+        });
+        add(btbuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 50, 40, 30));
+
+        btnIngresarCliente.setBackground(new java.awt.Color(17, 105, 142));
+        btnIngresarCliente.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        btnIngresarCliente.setForeground(new java.awt.Color(255, 255, 255));
+        btnIngresarCliente.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnIngresarCliente.setText("MODIFICAR");
+        btnIngresarCliente.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnIngresarCliente.setOpaque(true);
+        btnIngresarCliente.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnIngresarClienteMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnIngresarClienteMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnIngresarClienteMouseExited(evt);
+            }
+        });
+        add(btnIngresarCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 510, 170, 40));
+
+        txtTarjeta.setEditable(true);
+        txtTarjeta.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        txtTarjeta.setToolTipText("");
+        txtTarjeta.setBorder(null);
+        txtTarjeta.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        txtTarjeta.setDoubleBuffered(true);
+        txtTarjeta.setFocusable(false);
+        txtTarjeta.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtTarjetaMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                txtTarjetaMouseEntered(evt);
+            }
+        });
+        txtTarjeta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTarjetaActionPerformed(evt);
+            }
+        });
+        txtTarjeta.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                txtTarjetaPropertyChange(evt);
+            }
+        });
+        add(txtTarjeta, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 390, 140, 30));
+
+        jLabel16.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel16.setText("DPI");
+        add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 260, -1, 20));
+
+        txtDPI.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        txtDPI.setToolTipText("");
+        txtDPI.setBorder(null);
+        txtDPI.setOpaque(true);
+        txtDPI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDPIActionPerformed(evt);
+            }
+        });
+        add(txtDPI, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 280, 120, 30));
+
+        jLabel17.setText("________________________");
+        add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 300, 230, 20));
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void txtbuscadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtbuscadorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtbuscadorActionPerformed
+
+    private void txtNitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNitActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNitActionPerformed
+
+    private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNombreActionPerformed
+
+    private void txtTelefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTelefonoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTelefonoActionPerformed
+
+    private void txtPuntosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPuntosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPuntosActionPerformed
+
+    private void btbuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btbuscarMouseClicked
+        // TODO add your handling code here:
+        // Obtén el NIT ingresado por el usuario desde el campo de texto txtbuscador
+        String nitCliente = txtbuscador.getText().trim();
+
+        // Verifica que el NIT no esté vacío
+        if (!nitCliente.isEmpty()) {
+            // Realiza una consulta SQL para buscar al cliente por NIT
+            String consulta = "SELECT idCliente, nombreCliente, telefono, dpi, tarjeta, puntos, descuento, direccion "
+            + "FROM ControlPersonal.Cliente WHERE nitCliente = ?";
+
+            Connection conexion = new Conexion().establecerConexion();
+
+            try {
+                PreparedStatement pstmt = conexion.prepareStatement(consulta);
+                pstmt.setString(1, nitCliente); // Asigna el valor del NIT a la consulta
+                ResultSet resultado = pstmt.executeQuery();
+
+                boolean clienteEncontrado = false; // Variable para indicar si se encontró un cliente
+
+                while (resultado.next()) {
+                    idCliente = resultado.getInt("idCliente");
+                    String nombre = resultado.getString("nombreCliente");
+                    String telefono = resultado.getString("telefono");
+                    String dpi = resultado.getString("dpi");
+                    String tarjeta = resultado.getString("tarjeta");
+                    int puntos = resultado.getInt("puntos");
+                    double descuento = resultado.getDouble("descuento");
+                    String direccion = resultado.getString("direccion");
+
+                    // Establece los atributos del cliente en los campos de texto
+                    txtNit.setText(nitCliente);
+                    txtNombre.setText(nombre);
+                    txtTelefono.setText(telefono);
+                    txtPuntos.setText(String.valueOf(puntos));
+                    txtTarjeta.setSelectedIndex(getTarjeta(tarjeta));
+                    txtDireccion.setText(direccion);
+                    txtDPI.setText(dpi);
+
+                    clienteEncontrado = true; // Se encontró al menos un cliente
+                }
+
+                resultado.close();
+                pstmt.close();
+                conexion.close();
+
+                if (!clienteEncontrado) {
+                    JOptionPane.showMessageDialog(this, "Cliente no encontrado.");
+                }
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Error al buscar el cliente: " + e.getMessage());
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Ingrese un NIT válido para buscar al cliente.");
+        }
+    }//GEN-LAST:event_btbuscarMouseClicked
+
+    private void btbuscarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btbuscarMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btbuscarMouseEntered
+
+    private void btbuscarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btbuscarMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btbuscarMouseExited
+
+    private void btnIngresarClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIngresarClienteMouseClicked
+        try {
+            // TODO add your handling code here:
+
+            
+            String sql = "UPDATE  ControlPersonal.Cliente SET nitCliente = ?, nombreCliente = ?, telefono = ?, dpi=?, tarjeta=?, puntos=?, descuento=?, direccion=? WHERE idCliente =?";
+
+            PreparedStatement pst = conexion.prepareStatement(sql);
+            pst.setString(1, txtNit.getText());
+            pst.setString(2, txtNombre.getText());
+            pst.setString(3, txtTelefono.getText());
+            pst.setString(4, txtDPI.getText());
+            pst.setString(5, txtTarjeta.getSelectedItem().toString());
+            pst.setInt(6, Integer.parseInt(txtPuntos.getText()));
+            pst.setInt(7, 0); // Se corrige aquí
+            pst.setString(8, txtDireccion.getText());
+            pst.setInt(9, idCliente);
+
+            int rowsInserted = pst.executeUpdate();
+            if (rowsInserted > 0) {
+                System.out.println("La inserción se realizó correctamente.");
+            }
+
+            //JOptionPane.showMessageDialog(rootPane, "Ingresado");
+            // jLabel5.setText("Producto ingresada");
+            //txtname.setText("");
+        } catch (SQLException ex) {
+            Logger.getLogger(Modificar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_btnIngresarClienteMouseClicked
+
+    private void btnIngresarClienteMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIngresarClienteMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnIngresarClienteMouseEntered
+
+    private void btnIngresarClienteMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIngresarClienteMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnIngresarClienteMouseExited
+
+    private void txtTarjetaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtTarjetaMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTarjetaMouseClicked
+
+    private void txtTarjetaMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtTarjetaMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTarjetaMouseEntered
+
+    private void txtTarjetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTarjetaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTarjetaActionPerformed
+
+    private void txtTarjetaPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txtTarjetaPropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTarjetaPropertyChange
+
+    private void txtDPIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDPIActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDPIActionPerformed
+ 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> jOpciones;
+    private javax.swing.JLabel btbuscar;
+    private javax.swing.JLabel btnIngresarCliente;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTextField txtDPI;
+    private javax.swing.JTextField txtDireccion;
+    private javax.swing.JTextField txtNit;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtPuntos;
+    private javax.swing.JComboBox<String> txtTarjeta;
+    private javax.swing.JTextField txtTelefono;
+    private javax.swing.JTextField txtbuscador;
     // End of variables declaration//GEN-END:variables
 }

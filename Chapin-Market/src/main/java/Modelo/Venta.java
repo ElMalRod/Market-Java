@@ -16,13 +16,23 @@ public class Venta {
     private String nitCliente;
     private Date fecha;
     private double total;
+    private int idTienda;
 
-    public Venta(int idVenta, int idEmpleado, String nitCliente, Date fecha, double total) {
+    public Venta(int idVenta, int idEmpleado, String nitCliente, Date fecha, double total, int idTienda) {
         this.idVenta = idVenta;
         this.idEmpleado = idEmpleado;
         this.nitCliente = nitCliente;
         this.fecha = fecha;
         this.total = total;
+        this.idTienda = idTienda;
+    }
+
+    public int getIdTienda() {
+        return idTienda;
+    }
+
+    public void setIdTienda(int idTienda) {
+        this.idTienda = idTienda;
     }
 
     public int getIdEmpleado() {

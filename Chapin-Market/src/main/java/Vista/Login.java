@@ -209,9 +209,13 @@ public class Login extends javax.swing.JFrame {
                 System.out.println("contraseña "+contraseñaAlmacenada );
                 if (password.equals(contraseñaAlmacenada)) {
                     String rol = resultadoUsuario.getString("rol");
+                    String nombre = resultadoUsuario.getString("nombreEmpleado");
                     int id = resultadoUsuario.getInt("idTienda");
+                    int idEmpleado = resultadoUsuario.getInt("idEmpleado");
                     System.out.println("id " + id);
-
+                    System.out.println("idEmpleado " +idEmpleado);
+                    System.out.println("rol "+ rol);
+                    System.out.println("nombre "+nombre);
                     String nombreUsuario = resultadoUsuario.getString("nombreEmpleado");
 
                     if ("Administrador".equals(rol)) {
@@ -219,14 +223,12 @@ public class Login extends javax.swing.JFrame {
                         //adminFrame.setUsuarioYRol(nombreUsuario, rol); // Pasa el nombre de usuario y el rol
                         adminFrame.setVisible(true);
                     } else if ("Cajero".equals(rol)) {
-                        JFCajero cajeroFrame = new JFCajero(id);
-                        cajeroFrame.setUsuarioYRol(nombreUsuario, rol); // Pasa el nombre de usuario y el rol
+                        JFCajero cajeroFrame = new JFCajero(id, idEmpleado, rol, nombre);
                         cajeroFrame.setVisible(true);
                     } else if ("Bodega".equals(rol)) {
                         JFBodega bodegaFrame = new JFBodega(id);
                         bodegaFrame.setUsuarioYRol(nombreUsuario, rol); // Pasa el nombre de usuario y el rol
                         bodegaFrame.setVisible(true);
-
                     } else if ("Inventario".equals(rol)) {
                         JFInventory inventarioFrame = new JFInventory(id);
                         System.out.println(nombreUsuario+rol);

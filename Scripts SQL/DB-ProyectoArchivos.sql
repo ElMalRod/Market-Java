@@ -78,13 +78,10 @@ CREATE TABLE ControlVentas.Venta(
     fecha DATE NOT NULL,
     total DECIMAL(10,2) NOT NULL,
     idEmpleado INT NOT NULL,
-    idProducto INT,
-    cantidad INT,
     nitCliente VARCHAR(15)NOT NULL,
     idTienda INT ,
     PRIMARY KEY (idVenta),
     FOREIGN KEY (idEmpleado) REFERENCES ControlPersonal.Empleado(idEmpleado) ON DELETE CASCADE,
-    FOREIGN KEY (idProducto) REFERENCES ControlEmpresas.Producto(idProducto),
     FOREIGN KEY (nitCliente) REFERENCES ControlPersonal.Cliente(nitCliente),
     FOREIGN KEY (idTienda) REFERENCES ControlEmpresas.Tienda(idTienda)
 
@@ -92,9 +89,9 @@ CREATE TABLE ControlVentas.Venta(
 
 CREATE TABLE ControlVentas.DetalleVenta (
     idDetalleVenta SERIAL NOT NULL,
-    idVenta INT ,
-    idProducto INT,
-    cantidad INT,
+    idVenta INT NOT NULL,
+    idProducto INT NOT NULL,
+    cantidad INT NOT NULL,
     PRIMARY KEY (idDetalleVenta),
     FOREIGN KEY (idVenta) REFERENCES ControlVentas.Venta(idVenta) ON DELETE CASCADE,
     FOREIGN KEY (idProducto) REFERENCES ControlEmpresas.Producto(idProducto)
@@ -120,3 +117,5 @@ INSERT INTO ControlPersonal.Empleado(nombreEmpleado, telefono, rol, dpi, usernam
 INSERT INTO ControlPersonal.Empleado(nombreEmpleado, telefono, rol, dpi, username, password, idTienda,cajas) VALUES ('Maria', '12345678', 'Inventario', '1234567891011', 'maria', '123456', 3,NULL);
 
 INSERT INTO ControlVentas.Venta(fecha, total, idEmpleado, idProducto, cantidad, nitCliente, idTienda) VALUES ('2020-01-01', 10, 2, 2, 1, '123', 1);
+
+INSERT INTO ControlPersonal.Cliente(nitCliente, nombreCliente, telefono, dpi, tarjeta, puntos, descuento, direccion) VALUES ('CF', 'CF', '0000', '0000', '0000', 0, 0, 'CF');

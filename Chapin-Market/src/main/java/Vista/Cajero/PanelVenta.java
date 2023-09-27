@@ -9,6 +9,7 @@ import Modelo.CustomTableModel;
 import Modelo.DetalleVenta;
 import Modelo.Producto;
 import Modelo.Venta;
+import Vista.Bodega.ingresarProducto;
 import Vista.Inventario.trasladarProducto;
 import com.coderhouse.chapin.market.Conexion;
 import java.awt.BorderLayout;
@@ -45,21 +46,32 @@ public class PanelVenta extends javax.swing.JPanel {
     /**
      * Creates new form PanelVenta
      */
-    public int id;
+    public int idTienda;
+    public int idEmpleado;
+
+    public PanelVenta(int idTienda, int idEmpleado) {
+        this.idTienda = idTienda;
+        this.idEmpleado = idEmpleado;
+        this.idTienda = idTienda;
+        initComponents();
+        agregarDatosSelect();
+        jTableProductos.setModel(tableModel);
+
+        ventaDAO = new VentaDAO(conexion);
+        txtTarjeta.addItem("comun");
+        txtTarjeta.addItem("oro");
+        txtTarjeta.addItem("platino");
+        txtTarjeta.addItem("diamante");
+        txtTarjeta.addItem("ninguna");
+        
+    }
     CustomTableModel tableModel = new CustomTableModel(new Object[]{"Nombre", "Cantidad", "Precio"}, 0);
     private double totalVenta = 0.0;
     private VentaDAO ventaDAO;
 
     Connection conexion = new Conexion().establecerConexion();
 
-    public PanelVenta(int id) {
-        this.id = id;
-        initComponents();
-        agregarDatosSelect();
-        jTableProductos.setModel(tableModel);
-
-        ventaDAO = new VentaDAO(conexion);
-    }
+   
     // Método para cargar la lista de productos disponibles en la tienda
 
     // Método para actualizar el combo box de productos disponibles
@@ -69,7 +81,7 @@ public class PanelVenta extends javax.swing.JPanel {
         PreparedStatement pst;
         try {
             pst = conexion.prepareStatement(sql);
-            pst.setInt(1, id);
+            pst.setInt(1, idTienda);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 String nombreProducto = rs.getString("nombreProducto");
@@ -87,7 +99,7 @@ public class PanelVenta extends javax.swing.JPanel {
         PreparedStatement pst;
         try {
             pst = conexion.prepareStatement(sql);
-            pst.setInt(1, id);
+            pst.setInt(1, idTienda);
             pst.setString(2, jProducto.getSelectedItem().toString());
             ResultSet rs = pst.executeQuery();
 
@@ -111,7 +123,7 @@ public class PanelVenta extends javax.swing.JPanel {
             PreparedStatement pst;
             try {
                 pst = conexion.prepareStatement(sql);
-                pst.setInt(1, id);
+                pst.setInt(1, idTienda);
                 pst.setInt(2, item);
                 ResultSet rs = pst.executeQuery();
                 if (rs.next()) {
@@ -131,7 +143,7 @@ public class PanelVenta extends javax.swing.JPanel {
         PreparedStatement pst;
         try {
             pst = conexion.prepareStatement(sql);
-            pst.setInt(1, id);
+            pst.setInt(1, idTienda);
             pst.setInt(2, obtenerItem());
             ResultSet rs = pst.executeQuery();
 
@@ -152,7 +164,7 @@ public class PanelVenta extends javax.swing.JPanel {
         try {
             pst = conexion.prepareStatement(sql);
             pst.setInt(1, cantidadSeleccionada);
-            pst.setInt(2, id);
+            pst.setInt(2, idTienda);
             pst.setString(3, nombreProducto);
             pst.executeUpdate();
         } catch (SQLException ex) {
@@ -193,11 +205,33 @@ public class PanelVenta extends javax.swing.JPanel {
         txtNombre.setText("");
         txtTelefono.setText("");
         txtPuntos.setText("");
-        txtTarjeta.setText("");
+        txtTarjeta.setSelectedIndex(4);
         txtDireccion.setText("");
+        txtDPI.setText("");
         lbTotal.setText("Q.0.0");
         tableModel.setRowCount(0); // Limpia la tabla
         totalVenta = 0.0; // Restablece el total de la venta
+        
+    }
+    
+    private int getTarjeta(String tarjeta){
+        
+        if (tarjeta.equals("comun")) {
+            return 0;
+        }
+        if (tarjeta.equals("oro")) {
+            return 1;
+        }
+        if (tarjeta.equals("platino")) {
+            return 2;
+        }
+        if (tarjeta.equals("diamante")) {
+            return 3;
+        }
+        if (tarjeta.equals("ninguna")) {
+            return 4;
+        }
+        return 0;
     }
 
     /**
@@ -224,8 +258,6 @@ public class PanelVenta extends javax.swing.JPanel {
         jLabel11 = new javax.swing.JLabel();
         txtPuntos = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
-        txtTarjeta = new javax.swing.JTextField();
-        jLabel14 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         jLabel15 = new javax.swing.JLabel();
         lbTotal = new javax.swing.JTextField();
@@ -233,10 +265,10 @@ public class PanelVenta extends javax.swing.JPanel {
         jSeparator3 = new javax.swing.JSeparator();
         jCantidadProd = new javax.swing.JSpinner();
         jLabel19 = new javax.swing.JLabel();
-        jProducto = new javax.swing.JComboBox<>();
         jLabel20 = new javax.swing.JLabel();
         btnIngresarProd = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
+        jProducto = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         txtDireccion = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -252,6 +284,10 @@ public class PanelVenta extends javax.swing.JPanel {
         btbuscar = new javax.swing.JLabel();
         btnIngresarCliente = new javax.swing.JLabel();
         btnConfirmar = new javax.swing.JLabel();
+        txtTarjeta = new javax.swing.JComboBox<>();
+        jLabel16 = new javax.swing.JLabel();
+        txtDPI = new javax.swing.JTextField();
+        jLabel17 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setMaximumSize(new java.awt.Dimension(1500, 710));
@@ -351,20 +387,6 @@ public class PanelVenta extends javax.swing.JPanel {
 
         jLabel12.setText("_____________");
         add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 250, 110, -1));
-
-        txtTarjeta.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
-        txtTarjeta.setToolTipText("");
-        txtTarjeta.setBorder(null);
-        txtTarjeta.setOpaque(true);
-        txtTarjeta.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTarjetaActionPerformed(evt);
-            }
-        });
-        add(txtTarjeta, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 230, 250, 33));
-
-        jLabel14.setText("___________________________");
-        add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 250, 270, -1));
         add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 310, 1020, 10));
 
         jLabel15.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
@@ -393,27 +415,6 @@ public class PanelVenta extends javax.swing.JPanel {
         jLabel19.setForeground(new java.awt.Color(102, 102, 102));
         jLabel19.setText("Cantidad");
 
-        jProducto.setEditable(true);
-        jProducto.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
-        jProducto.setToolTipText("");
-        jProducto.setBorder(null);
-        jProducto.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jProducto.setDoubleBuffered(true);
-        jProducto.setFocusable(false);
-        jProducto.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jProductoMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jProductoMouseEntered(evt);
-            }
-        });
-        jProducto.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                jProductoPropertyChange(evt);
-            }
-        });
-
         jLabel20.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel20.setForeground(new java.awt.Color(102, 102, 102));
         jLabel20.setText("Producto");
@@ -441,6 +442,27 @@ public class PanelVenta extends javax.swing.JPanel {
         jLabel23.setForeground(new java.awt.Color(102, 102, 102));
         jLabel23.setText(" AGREGAR PRODCUTOS");
 
+        jProducto.setEditable(true);
+        jProducto.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        jProducto.setToolTipText("");
+        jProducto.setBorder(null);
+        jProducto.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jProducto.setDoubleBuffered(true);
+        jProducto.setFocusable(false);
+        jProducto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jProductoMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jProductoMouseEntered(evt);
+            }
+        });
+        jProducto.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jProductoPropertyChange(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -455,10 +477,10 @@ public class PanelVenta extends javax.swing.JPanel {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(36, 36, 36)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel20)
                                     .addComponent(jLabel19)
-                                    .addComponent(jCantidadProd, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(jCantidadProd, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addComponent(jLabel23)))
@@ -480,13 +502,13 @@ public class PanelVenta extends javax.swing.JPanel {
                 .addComponent(jLabel20)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(12, 12, 12)
                 .addComponent(jLabel19)
                 .addGap(8, 8, 8)
                 .addComponent(jCantidadProd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnIngresarProd, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 330, 370, 290));
@@ -551,7 +573,7 @@ public class PanelVenta extends javax.swing.JPanel {
                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 330, 590, 290));
@@ -623,7 +645,7 @@ public class PanelVenta extends javax.swing.JPanel {
         btnIngresarCliente.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         btnIngresarCliente.setForeground(new java.awt.Color(255, 255, 255));
         btnIngresarCliente.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btnIngresarCliente.setText("Ingresar");
+        btnIngresarCliente.setText("INGRESAR NUEVO");
         btnIngresarCliente.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnIngresarCliente.setOpaque(true);
         btnIngresarCliente.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -637,7 +659,7 @@ public class PanelVenta extends javax.swing.JPanel {
                 btnIngresarClienteMouseExited(evt);
             }
         });
-        add(btnIngresarCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 230, 150, 40));
+        add(btnIngresarCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 230, 170, 40));
 
         btnConfirmar.setBackground(new java.awt.Color(25, 69, 107));
         btnConfirmar.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
@@ -658,6 +680,52 @@ public class PanelVenta extends javax.swing.JPanel {
             }
         });
         add(btnConfirmar, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 640, 220, 40));
+
+        txtTarjeta.setEditable(true);
+        txtTarjeta.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        txtTarjeta.setToolTipText("");
+        txtTarjeta.setBorder(null);
+        txtTarjeta.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        txtTarjeta.setDoubleBuffered(true);
+        txtTarjeta.setFocusable(false);
+        txtTarjeta.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtTarjetaMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                txtTarjetaMouseEntered(evt);
+            }
+        });
+        txtTarjeta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTarjetaActionPerformed(evt);
+            }
+        });
+        txtTarjeta.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                txtTarjetaPropertyChange(evt);
+            }
+        });
+        add(txtTarjeta, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 230, 140, 30));
+
+        jLabel16.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel16.setText("DPI");
+        add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 210, -1, -1));
+
+        txtDPI.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        txtDPI.setToolTipText("");
+        txtDPI.setBorder(null);
+        txtDPI.setOpaque(true);
+        txtDPI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDPIActionPerformed(evt);
+            }
+        });
+        add(txtDPI, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 230, 120, 33));
+
+        jLabel17.setText("________________________");
+        add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 250, 120, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtNitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNitActionPerformed
@@ -675,10 +743,6 @@ public class PanelVenta extends javax.swing.JPanel {
     private void txtPuntosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPuntosActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtPuntosActionPerformed
-
-    private void txtTarjetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTarjetaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTarjetaActionPerformed
 
     private void lbTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lbTotalActionPerformed
         // TODO add your handling code here:
@@ -789,8 +853,9 @@ public class PanelVenta extends javax.swing.JPanel {
                     txtNombre.setText(nombre);
                     txtTelefono.setText(telefono);
                     txtPuntos.setText(String.valueOf(puntos));
-                    txtTarjeta.setText(tarjeta);
+                    txtTarjeta.setSelectedIndex(getTarjeta(tarjeta));
                     txtDireccion.setText(direccion);
+                    txtDPI.setText(dpi);
 
                     clienteEncontrado = true; // Se encontró al menos un cliente
                 }
@@ -820,6 +885,31 @@ public class PanelVenta extends javax.swing.JPanel {
 
     private void btnIngresarClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIngresarClienteMouseClicked
         // TODO add your handling code here:
+        
+        try {
+            String sql = "INSERT INTO ControlPersonal.Cliente(nitCliente, nombreCliente, telefono, dpi, tarjeta, puntos, descuento, direccion) VALUES (?, ?, ?, ?, ?, ?, ?,?)";
+            
+            PreparedStatement pst = conexion.prepareStatement(sql);
+            pst.setString(1, txtNit.getText());
+            pst.setString(2, txtNombre.getText());
+            pst.setString(3, txtTelefono.getText());
+            pst.setString(4, txtDPI.getText());
+            pst.setString(5, txtTarjeta.getSelectedItem().toString());
+            pst.setInt(6, Integer.parseInt(txtPuntos.getText()));
+            pst.setInt(7, 0); // Se corrige aquí
+            pst.setString(8, txtDireccion.getText());
+            
+            int rowsInserted = pst.executeUpdate();
+            if (rowsInserted > 0) {
+                System.out.println("La inserción se realizó correctamente.");
+            }
+           
+            //JOptionPane.showMessageDialog(rootPane, "Ingresado");
+           // jLabel5.setText("Producto ingresada");
+            //txtname.setText("");
+        } catch (SQLException ex) {
+            Logger.getLogger(ingresarProducto.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnIngresarClienteMouseClicked
 
     private void btnIngresarClienteMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIngresarClienteMouseEntered
@@ -838,7 +928,8 @@ public class PanelVenta extends javax.swing.JPanel {
         // Verifica que se haya ingresado un NIT válido
         if (!nitCliente.isEmpty()) {
             // Crea una instancia de la clase Venta con los datos de la venta
-            Venta venta = new Venta(0, id, nitCliente, new Date(), totalVenta);
+            Venta venta = new Venta(0, idEmpleado, nitCliente, new Date(), totalVenta, idTienda);
+         
 
             // Crea una lista para almacenar los detalles de la venta
             List<DetalleVenta> detallesVenta = new ArrayList<>();
@@ -882,7 +973,28 @@ public class PanelVenta extends javax.swing.JPanel {
 
     private void btnConfirmarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConfirmarMouseExited
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_btnConfirmarMouseExited
+
+    private void txtTarjetaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtTarjetaMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTarjetaMouseClicked
+
+    private void txtTarjetaMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtTarjetaMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTarjetaMouseEntered
+
+    private void txtTarjetaPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_txtTarjetaPropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTarjetaPropertyChange
+
+    private void txtTarjetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTarjetaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTarjetaActionPerformed
+
+    private void txtDPIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDPIActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDPIActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -896,8 +1008,9 @@ public class PanelVenta extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
@@ -922,11 +1035,12 @@ public class PanelVenta extends javax.swing.JPanel {
     private javax.swing.JTable jTableProductos;
     private javax.swing.JTextField lbDescuento;
     private javax.swing.JTextField lbTotal;
+    private javax.swing.JTextField txtDPI;
     private javax.swing.JTextField txtDireccion;
     private javax.swing.JTextField txtNit;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtPuntos;
-    private javax.swing.JTextField txtTarjeta;
+    private javax.swing.JComboBox<String> txtTarjeta;
     private javax.swing.JTextField txtTelefono;
     private javax.swing.JTextField txtbuscador;
     // End of variables declaration//GEN-END:variables

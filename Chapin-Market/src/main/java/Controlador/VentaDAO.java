@@ -20,7 +20,7 @@ import java.util.List;
 
 public class VentaDAO {
 
-    private Connection conexion; // Debes establecer esta conexión en tu clase principal
+    private Connection conexion; 
 
     public VentaDAO(Connection conexion) {
         this.conexion = conexion;
@@ -44,12 +44,13 @@ public class VentaDAO {
 
     public void insertarVenta(Venta venta, List<DetalleVenta> detalles) throws SQLException {
         // Inserta la venta en la tabla ControlVentas.Venta
-        String sqlVenta = "INSERT INTO ControlVentas.Venta (idEmpleado, nitCliente, fecha, total) VALUES (?, ?, ?, ?)";
+        String sqlVenta = "INSERT INTO ControlVentas.Venta (idEmpleado, nitCliente, fecha, total,idTienda) VALUES (?, ?, ?, ?,?)";
         PreparedStatement pstmtVenta = conexion.prepareStatement(sqlVenta);
         pstmtVenta.setInt(1, venta.getIdEmpleado());
         pstmtVenta.setString(2, venta.getNitCliente());
         pstmtVenta.setDate(3, new java.sql.Date(venta.getFecha().getTime()));
         pstmtVenta.setDouble(4, venta.getTotal());
+        pstmtVenta.setInt(5, venta.getIdTienda());
         pstmtVenta.executeUpdate();
 
         // Obtiene el ID de la venta recién insertada

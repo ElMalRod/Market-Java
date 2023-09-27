@@ -22,15 +22,28 @@ public class JFCajero extends javax.swing.JFrame {
     /**
      * Creates new form JFCajero
      */
-    public int id;
-
-    public JFCajero(int id) {
-        this.id = id;
+    public int idTienda;
+    public int idEmpleado;
+    public String nombreUsuario;
+    public String rol;
+    
+    public JFCajero(int idTienda, int idEmpleado, String nombreUsuario, String rol) {
+        this.idTienda = idTienda;
+        this.idEmpleado = idEmpleado;
+        this.nombreUsuario = nombreUsuario;
+        this.rol = rol;
         initComponents();
+        btUser.setText(rol + " - " + nombreUsuario);
+        String nombreTienda = obtenerNombreTienda();
+        lblNombreTienda.setText("Tienda: " + nombreTienda); // Muestra el nombre de la tienda en un JLabel
     }
+    
+
+    
 
     public JFCajero() {
         initComponents();
+        
     }
 
     /**
@@ -204,11 +217,6 @@ public class JFCajero extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-        public void setUsuarioYRol(String nombreUsuario, String rol) {
-        btUser.setText(rol + " - " + nombreUsuario);
-        String nombreTienda = obtenerNombreTienda();
-        lblNombreTienda.setText("Tienda: " + nombreTienda); // Muestra el nombre de la tienda en un JLabel
-    }
 
     private String obtenerNombreTienda() {
         Connection conexion = new Conexion().establecerConexion();
@@ -217,7 +225,7 @@ public class JFCajero extends javax.swing.JFrame {
         try {
             String consultaTienda = "SELECT nombreTienda FROM ControlEmpresas.Tienda WHERE idTienda = ?";
             PreparedStatement pstmtTienda = conexion.prepareStatement(consultaTienda);
-            pstmtTienda.setInt(1, id);
+            pstmtTienda.setInt(1, idTienda);
             ResultSet resultadoTienda = pstmtTienda.executeQuery();
 
             if (resultadoTienda.next()) {
@@ -248,7 +256,7 @@ public class JFCajero extends javax.swing.JFrame {
 
     private void btnModificarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnModificarMouseClicked
         // TODO add your handling code here:
-        Modificar p = new Modificar(id);
+        Modificar p = new Modificar(idTienda);
         p.setSize(1200, 710);
         p.setLocation(0, 0);
         content.removeAll();
@@ -269,7 +277,7 @@ public class JFCajero extends javax.swing.JFrame {
 
     private void btnVentaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnVentaMouseClicked
         // TODO add your handling code here:
-        PanelVenta  p= new PanelVenta(id);
+        PanelVenta  p= new PanelVenta(idTienda, idEmpleado);
       p.setSize(1350, 710);
         p.setLocation(0, 0);
         content.removeAll();
@@ -290,7 +298,7 @@ public class JFCajero extends javax.swing.JFrame {
 
     private void btnClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnClientesMouseClicked
         // TODO add your handling code here:
-        PanelClientes p = new PanelClientes(id);
+        PanelClientes p = new PanelClientes(idTienda);
         p.setSize(1250, 720);
         p.setLocation(0, 0);
         content.removeAll();
