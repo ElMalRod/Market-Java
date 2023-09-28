@@ -36,6 +36,7 @@ public class JFCajero extends javax.swing.JFrame {
         btUser.setText(rol + " - " + nombreUsuario);
         String nombreTienda = obtenerNombreTienda();
         lblNombreTienda.setText("Tienda: " + nombreTienda); // Muestra el nombre de la tienda en un JLabel
+        setLocationRelativeTo(null);//pone la pantalla en el centro
     }
     
 

@@ -4,17 +4,64 @@
  */
 package Vista.Admin;
 
+import com.coderhouse.chapin.market.Conexion;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author emili_zxg0ruq
  */
 public class JFAdmin extends javax.swing.JFrame {
 
+    public int idTienda;
+    public String nombreUsuario;
+    public String rol;
+
+    public JFAdmin(int idTienda, String nombreUsuario, String rol) {
+        this.idTienda = idTienda;
+        this.nombreUsuario = nombreUsuario;
+        this.rol = rol;
+        initComponents();
+        setLocationRelativeTo(null);//pone la pantalla en el centro
+        btUser.setText(rol + " - " + nombreUsuario);
+        String nombreTienda = obtenerNombreTienda();
+        lblNombreTienda.setText("Tienda: " + nombreTienda); // Muestra el nombre de la tienda en un JLabel
+    }
     /**
      * Creates new form JFAdmin
      */
     public JFAdmin() {
         initComponents();
+    }
+    
+    private String obtenerNombreTienda() {
+        Connection conexion = new Conexion().establecerConexion();
+        String nombreTienda = "";
+
+        try {
+            String consultaTienda = "SELECT nombreTienda FROM ControlEmpresas.Tienda WHERE idTienda = ?";
+            PreparedStatement pstmtTienda = conexion.prepareStatement(consultaTienda);
+            pstmtTienda.setInt(1, idTienda);
+            ResultSet resultadoTienda = pstmtTienda.executeQuery();
+
+            if (resultadoTienda.next()) {
+                nombreTienda = resultadoTienda.getString("nombreTienda");
+            }
+
+            resultadoTienda.close();
+            pstmtTienda.close();
+            conexion.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error al consultar la tienda: " + e.getMessage());
+        }
+
+        return nombreTienda;
     }
 
     /**
@@ -26,31 +73,289 @@ public class JFAdmin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        btUser = new javax.swing.JLabel();
+        content = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        lblNombreTienda = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        btnTarjetas = new javax.swing.JLabel();
+        lblNombreTienda1 = new javax.swing.JLabel();
+        btnHistorial = new javax.swing.JLabel();
+        btnEmpleados = new javax.swing.JLabel();
+        btIngresar2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(1100, 710));
+        setMinimumSize(new java.awt.Dimension(1100, 710));
+        setPreferredSize(new java.awt.Dimension(1100, 710));
 
-        jLabel1.setText("ADMIN");
+        btUser.setBackground(new java.awt.Color(255, 255, 255));
+        btUser.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        btUser.setForeground(new java.awt.Color(17, 105, 142));
+        btUser.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btUser.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btUser.setOpaque(true);
+        btUser.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btUserMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btUserMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btUserMouseExited(evt);
+            }
+        });
+
+        content.setBackground(new java.awt.Color(255, 255, 255));
+        content.setMaximumSize(new java.awt.Dimension(910, 680));
+        content.setMinimumSize(new java.awt.Dimension(910, 680));
+        content.setPreferredSize(new java.awt.Dimension(910, 680));
+        content.setRequestFocusEnabled(false);
+
+        javax.swing.GroupLayout contentLayout = new javax.swing.GroupLayout(content);
+        content.setLayout(contentLayout);
+        contentLayout.setHorizontalGroup(
+            contentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 910, Short.MAX_VALUE)
+        );
+        contentLayout.setVerticalGroup(
+            contentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 680, Short.MAX_VALUE)
+        );
+
+        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel1.setOpaque(true);
+
+        jLabel2.setBackground(new java.awt.Color(17, 105, 142));
+        jLabel2.setOpaque(true);
+
+        lblNombreTienda.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        lblNombreTienda.setForeground(new java.awt.Color(255, 255, 255));
+        lblNombreTienda.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        jPanel1.setBackground(new java.awt.Color(25, 69, 107));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        btnTarjetas.setBackground(new java.awt.Color(25, 69, 107));
+        btnTarjetas.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        btnTarjetas.setForeground(new java.awt.Color(255, 255, 255));
+        btnTarjetas.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnTarjetas.setText("TARJETAS");
+        btnTarjetas.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnTarjetas.setOpaque(true);
+        btnTarjetas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnTarjetasMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnTarjetasMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnTarjetasMouseExited(evt);
+            }
+        });
+        jPanel1.add(btnTarjetas, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 170, 190, 50));
+
+        lblNombreTienda1.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
+        lblNombreTienda1.setForeground(new java.awt.Color(255, 255, 255));
+        lblNombreTienda1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jPanel1.add(lblNombreTienda1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 190, 40));
+
+        btnHistorial.setBackground(new java.awt.Color(25, 69, 107));
+        btnHistorial.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        btnHistorial.setForeground(new java.awt.Color(255, 255, 255));
+        btnHistorial.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnHistorial.setText("HISTORIAL");
+        btnHistorial.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnHistorial.setOpaque(true);
+        btnHistorial.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnHistorialMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnHistorialMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnHistorialMouseExited(evt);
+            }
+        });
+        jPanel1.add(btnHistorial, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 190, 50));
+
+        btnEmpleados.setBackground(new java.awt.Color(25, 69, 107));
+        btnEmpleados.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        btnEmpleados.setForeground(new java.awt.Color(255, 255, 255));
+        btnEmpleados.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnEmpleados.setText("EMPLEADOS");
+        btnEmpleados.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnEmpleados.setOpaque(true);
+        btnEmpleados.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnEmpleadosMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnEmpleadosMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnEmpleadosMouseExited(evt);
+            }
+        });
+        jPanel1.add(btnEmpleados, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 120, 192, 50));
+
+        btIngresar2.setBackground(new java.awt.Color(25, 69, 107));
+        btIngresar2.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        btIngresar2.setForeground(new java.awt.Color(255, 255, 255));
+        btIngresar2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btIngresar2.setText("VER CLIENTES");
+        btIngresar2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btIngresar2.setOpaque(true);
+        btIngresar2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btIngresar2MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btIngresar2MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btIngresar2MouseExited(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(202, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(159, 159, 159))
+            .addGap(0, 1108, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(lblNombreTienda, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btIngresar2, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(btUser, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 660, Short.MAX_VALUE))
+                        .addComponent(content, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(0, 2, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(120, 120, 120)
-                .addComponent(jLabel1)
-                .addContainerGap(164, Short.MAX_VALUE))
+            .addGap(0, 720, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(lblNombreTienda, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(230, 230, 230)
+                            .addComponent(btIngresar2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(btUser, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(20, 20, 20)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(content, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btUserMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btUserMouseClicked
+
+    private void btUserMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btUserMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btUserMouseEntered
+
+    private void btUserMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btUserMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btUserMouseExited
+
+    private void btnTarjetasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnTarjetasMouseClicked
+        // TODO add your handling code here:
+        PanelTarjetas p = new PanelTarjetas(idTienda);
+        p.setSize(910,680);
+        p.setLocation(0, 0);
+        content.removeAll();
+        content.add(p, BorderLayout.CENTER);
+        content.revalidate();
+        content.repaint();
+    }//GEN-LAST:event_btnTarjetasMouseClicked
+
+    private void btnTarjetasMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnTarjetasMouseEntered
+        // TODO add your handling code here:
+        btnHistorial.setBackground(new Color(22, 199, 154));
+    }//GEN-LAST:event_btnTarjetasMouseEntered
+
+    private void btnTarjetasMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnTarjetasMouseExited
+        // TODO add your handling code here:
+        btnHistorial.setBackground(new Color(25, 69, 107));
+    }//GEN-LAST:event_btnTarjetasMouseExited
+
+    private void btnHistorialMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnHistorialMouseClicked
+        // TODO add your handling code here:
+        Historial p = new Historial(idTienda);
+        p.setSize(910,680);
+        p.setLocation(0, 0);
+        content.removeAll();
+        content.add(p, BorderLayout.CENTER);
+        content.revalidate();
+        content.repaint();
+    }//GEN-LAST:event_btnHistorialMouseClicked
+
+    private void btnHistorialMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnHistorialMouseEntered
+        // TODO add your handling code here:
+        btnHistorial.setBackground(new Color(22, 199, 154));
+    }//GEN-LAST:event_btnHistorialMouseEntered
+
+    private void btnHistorialMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnHistorialMouseExited
+        // TODO add your handling code here:
+        btnHistorial.setBackground(new Color(25, 69, 107));
+    }//GEN-LAST:event_btnHistorialMouseExited
+
+    private void btnEmpleadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEmpleadosMouseClicked
+        // TODO add your handling code here:
+        IngresarEmpleado  p= new IngresarEmpleado(idTienda);
+        p.setSize(910,680);
+        p.setLocation(0, 0);
+        content.removeAll();
+        content.add(p, BorderLayout.CENTER);
+        content.revalidate();
+        content.repaint();
+    }//GEN-LAST:event_btnEmpleadosMouseClicked
+
+    private void btnEmpleadosMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEmpleadosMouseEntered
+        // TODO add your handling code here:
+        btnEmpleados.setBackground(new Color(22, 199, 154));
+    }//GEN-LAST:event_btnEmpleadosMouseEntered
+
+    private void btnEmpleadosMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEmpleadosMouseExited
+        // TODO add your handling code here:
+        btnEmpleados.setBackground(new Color(25, 69, 107));
+    }//GEN-LAST:event_btnEmpleadosMouseExited
+
+    private void btIngresar2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btIngresar2MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btIngresar2MouseClicked
+
+    private void btIngresar2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btIngresar2MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btIngresar2MouseEntered
+
+    private void btIngresar2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btIngresar2MouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btIngresar2MouseExited
 
     /**
      * @param args the command line arguments
@@ -88,6 +393,16 @@ public class JFAdmin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel btIngresar2;
+    private javax.swing.JLabel btUser;
+    private javax.swing.JLabel btnEmpleados;
+    private javax.swing.JLabel btnHistorial;
+    private javax.swing.JLabel btnTarjetas;
+    private javax.swing.JPanel content;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lblNombreTienda;
+    private javax.swing.JLabel lblNombreTienda1;
     // End of variables declaration//GEN-END:variables
 }

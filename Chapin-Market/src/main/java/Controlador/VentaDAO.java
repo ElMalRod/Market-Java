@@ -44,13 +44,14 @@ public class VentaDAO {
 
     public void insertarVenta(Venta venta, List<DetalleVenta> detalles) throws SQLException {
         // Inserta la venta en la tabla ControlVentas.Venta
-        String sqlVenta = "INSERT INTO ControlVentas.Venta (idEmpleado, nitCliente, fecha, total,idTienda) VALUES (?, ?, ?, ?,?)";
+        String sqlVenta = "INSERT INTO ControlVentas.Venta (idEmpleado, nitCliente, fecha, total,totalDescuento,idTienda) VALUES (?, ?, ?, ?,?,?)";
         PreparedStatement pstmtVenta = conexion.prepareStatement(sqlVenta);
         pstmtVenta.setInt(1, venta.getIdEmpleado());
         pstmtVenta.setString(2, venta.getNitCliente());
         pstmtVenta.setDate(3, new java.sql.Date(venta.getFecha().getTime()));
         pstmtVenta.setDouble(4, venta.getTotal());
-        pstmtVenta.setInt(5, venta.getIdTienda());
+         pstmtVenta.setDouble(5, venta.getTotalDescuento());
+        pstmtVenta.setInt(6, venta.getIdTienda());
         pstmtVenta.executeUpdate();
 
         // Obtiene el ID de la venta recién insertada
@@ -62,15 +63,15 @@ public class VentaDAO {
 
         for (DetalleVenta detalle : detalles) {
             detalle.setIdVenta(idVentaGenerado); // Establece el ID de venta en el detalle
-            int idProducto = obtenerIdProductoPorNombre(detalle.getNombreProducto()); // Obtén el ID del producto por su nombre
-            detalle.setIdProducto(idProducto); // Establece el ID del producto en el detalle
+            int idProducto = obtenerIdProductoPorNombre(detalle.getNombreProducto()); 
+            detalle.setIdProducto(idProducto); 
             pstmtDetalleVenta.setInt(1, detalle.getIdVenta());
             pstmtDetalleVenta.setInt(2, detalle.getIdProducto());
             pstmtDetalleVenta.setInt(3, detalle.getCantidad());
             pstmtDetalleVenta.executeUpdate();
         }
 
-        // Cierra los PreparedStatement y realiza cualquier otro manejo de excepciones necesario
+        // Cierra los PreparedStatement 
         pstmtVenta.close();
         pstmtDetalleVenta.close();
     }

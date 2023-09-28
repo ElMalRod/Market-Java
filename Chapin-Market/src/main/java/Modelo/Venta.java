@@ -16,16 +16,28 @@ public class Venta {
     private String nitCliente;
     private Date fecha;
     private double total;
+    private double totalDescuento;
     private int idTienda;
 
-    public Venta(int idVenta, int idEmpleado, String nitCliente, Date fecha, double total, int idTienda) {
+    public Venta(int idVenta, int idEmpleado, String nitCliente, Date fecha, double total, double totalDescuento, int idTienda) {
         this.idVenta = idVenta;
         this.idEmpleado = idEmpleado;
         this.nitCliente = nitCliente;
         this.fecha = fecha;
         this.total = total;
+        this.totalDescuento = totalDescuento;
         this.idTienda = idTienda;
     }
+
+    public double getTotalDescuento() {
+        return totalDescuento;
+    }
+
+    public void setTotalDescuento(double totalDescuento) {
+        this.totalDescuento = totalDescuento;
+    }
+
+
 
     public int getIdTienda() {
         return idTienda;

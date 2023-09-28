@@ -48,6 +48,7 @@ public class PanelVenta extends javax.swing.JPanel {
      */
     public int idTienda;
     public int idEmpleado;
+    public float totalDescuento=0;
 
     public PanelVenta(int idTienda, int idEmpleado) {
         this.idTienda = idTienda;
@@ -824,7 +825,6 @@ public class PanelVenta extends javax.swing.JPanel {
         // Obtén el NIT ingresado por el usuario desde el campo de texto txtbuscador
         String nitCliente = txtbuscador.getText().trim();
 
-        // Verifica que el NIT no esté vacío
         if (!nitCliente.isEmpty()) {
             // Realiza una consulta SQL para buscar al cliente por NIT
             String consulta = "SELECT nombreCliente, telefono, dpi, tarjeta, puntos, descuento, direccion "
@@ -928,7 +928,7 @@ public class PanelVenta extends javax.swing.JPanel {
         // Verifica que se haya ingresado un NIT válido
         if (!nitCliente.isEmpty()) {
             // Crea una instancia de la clase Venta con los datos de la venta
-            Venta venta = new Venta(0, idEmpleado, nitCliente, new Date(), totalVenta, idTienda);
+            Venta venta = new Venta(0, idEmpleado, nitCliente, new Date(), totalVenta,totalDescuento, idTienda);
          
 
             // Crea una lista para almacenar los detalles de la venta

@@ -219,7 +219,7 @@ public class Login extends javax.swing.JFrame {
                     String nombreUsuario = resultadoUsuario.getString("nombreEmpleado");
 
                     if ("Administrador".equals(rol)) {
-                        JFAdmin adminFrame = new JFAdmin();
+                        JFAdmin adminFrame = new JFAdmin(id, rol, nombre);
                         //adminFrame.setUsuarioYRol(nombreUsuario, rol); // Pasa el nombre de usuario y el rol
                         adminFrame.setVisible(true);
                     } else if ("Cajero".equals(rol)) {
