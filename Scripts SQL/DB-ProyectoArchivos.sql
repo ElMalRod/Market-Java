@@ -21,7 +21,7 @@ CREATE TABLE ControlEmpresas.Tienda(
     idTienda SERIAL PRIMARY KEY,
     nombreTienda VARCHAR(50) NOT NULL,
     direccion VARCHAR(50) NOT NULL,
-    telefono VARCHAR(10) NOT NULL
+    telefono VARCHAR(10) NOT NULL,
 );
 
 CREATE TABLE ControlEmpresas.Producto(
@@ -77,6 +77,7 @@ CREATE TABLE ControlVentas.Venta(
     idVenta SERIAL NOT NULL,
     fecha DATE NOT NULL,
     total DECIMAL(10,2) NOT NULL,
+    totalDescuento DECIMAL(10,2),
     idEmpleado INT NOT NULL,
     nitCliente VARCHAR(15)NOT NULL,
     idTienda INT ,

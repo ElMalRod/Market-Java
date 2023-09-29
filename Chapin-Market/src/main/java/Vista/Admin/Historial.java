@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -20,6 +21,7 @@ public class Historial extends javax.swing.JPanel {
 
     public int idTienda;
     public int mes;
+    private DefaultTableModel tableModel;
     Connection conexion = new Conexion().establecerConexion();
 
     public Historial(int idTienda) {
@@ -36,7 +38,16 @@ public class Historial extends javax.swing.JPanel {
         txtMes.addItem("Septiembre");
         txtMes.addItem("Noviembre");
         txtMes.addItem("Diciembre");
+
+        tableModel = new DefaultTableModel();
+        tableModel.addColumn("ID Venta");
+        tableModel.addColumn("Fecha de Venta");
+        tableModel.addColumn("Descuento");
+
+        // Asigna el modelo de tabla a la jTableHistorial
+        jTableHistorial.setModel(tableModel);
     }
+
     /**
      * Creates new form Historial
      */
@@ -56,6 +67,8 @@ public class Historial extends javax.swing.JPanel {
         jLabel4 = new javax.swing.JLabel();
         btbuscar = new javax.swing.JLabel();
         txtMes = new javax.swing.JComboBox<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTableHistorial = new javax.swing.JTable();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setMaximumSize(new java.awt.Dimension(910, 680));
@@ -116,32 +129,45 @@ public class Historial extends javax.swing.JPanel {
             }
         });
         add(txtMes, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, 320, 30));
+
+        jTableHistorial.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTableHistorial);
+
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 140, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btbuscarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btbuscarMouseClicked
         // TODO add your handling code here:
         // Obtén el NIT ingresado por el usuario desde el campo de texto txtbuscador
-        mes = txtMes.getSelectedIndex()+1;
+        mes = txtMes.getSelectedIndex() + 1;
         String sql = "SELECT * FROM ControlVentas.Venta WHERE EXTRACT(MONTH FROM fecha) = ?";
-            try (PreparedStatement preparedStatement = conexion.prepareStatement(sql)) {
-                preparedStatement.setInt(1, mes);
-                try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                    while (resultSet.next()) {
-                        int idVenta = resultSet.getInt("idVenta");
-                        String fechaVenta = resultSet.getString("fecha");
-                        float totalDescuento = resultSet.getFloat("totalDescuento");
-                        // Otros campos de la tabla ventas
+        try (PreparedStatement preparedStatement = conexion.prepareStatement(sql)) {
+            preparedStatement.setInt(1, mes);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    int idVenta = resultSet.getInt("idVenta");
+                    String fechaVenta = resultSet.getString("fecha");
+                    float totalDescuento = resultSet.getFloat("totalDescuento");
 
-                        System.out.println("ID Venta: " + idVenta);
-                        System.out.println("Fecha de Venta: " + fechaVenta);
-                        System.out.println("desc: " + totalDescuento);
-                        // Imprimir otros datos de ventas
-                    }
+                    // Agrega una fila al modelo de la tabla
+                    Object[] fila = {idVenta, fechaVenta, totalDescuento};
+                    tableModel.addRow(fila);
                 }
-            } catch (SQLException ex) {
+            }
+        } catch (SQLException ex) {
             Logger.getLogger(Historial.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }//GEN-LAST:event_btbuscarMouseClicked
 
     private void btbuscarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btbuscarMouseEntered
@@ -172,6 +198,8 @@ public class Historial extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel btbuscar;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTableHistorial;
     private javax.swing.JComboBox<String> txtMes;
     // End of variables declaration//GEN-END:variables
 }

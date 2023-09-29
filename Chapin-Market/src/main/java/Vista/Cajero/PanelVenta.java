@@ -48,7 +48,9 @@ public class PanelVenta extends javax.swing.JPanel {
      */
     public int idTienda;
     public int idEmpleado;
-    public float totalDescuento=0;
+    public float totalDescuento = 0;
+    public int puntosCliente =0; 
+    public boolean confirmarDescuento = false;
 
     public PanelVenta(int idTienda, int idEmpleado) {
         this.idTienda = idTienda;
@@ -64,7 +66,7 @@ public class PanelVenta extends javax.swing.JPanel {
         txtTarjeta.addItem("platino");
         txtTarjeta.addItem("diamante");
         txtTarjeta.addItem("ninguna");
-        
+
     }
     CustomTableModel tableModel = new CustomTableModel(new Object[]{"Nombre", "Cantidad", "Precio"}, 0);
     private double totalVenta = 0.0;
@@ -72,9 +74,7 @@ public class PanelVenta extends javax.swing.JPanel {
 
     Connection conexion = new Conexion().establecerConexion();
 
-   
     // Método para cargar la lista de productos disponibles en la tienda
-
     // Método para actualizar el combo box de productos disponibles
     public void agregarDatosSelect() {
 
@@ -176,6 +176,7 @@ public class PanelVenta extends javax.swing.JPanel {
     private void mostrarTotalDeVenta() {
 
         lbTotal.setText("Q." + totalVenta);
+
     }
 
     private int obtenerIdProductoPorNombre(String nombreProducto) {
@@ -212,11 +213,12 @@ public class PanelVenta extends javax.swing.JPanel {
         lbTotal.setText("Q.0.0");
         tableModel.setRowCount(0); // Limpia la tabla
         totalVenta = 0.0; // Restablece el total de la venta
-        
+        lbDescuento.setText("");
+
     }
-    
-    private int getTarjeta(String tarjeta){
-        
+
+    private int getTarjeta(String tarjeta) {
+
         if (tarjeta.equals("comun")) {
             return 0;
         }
@@ -233,6 +235,30 @@ public class PanelVenta extends javax.swing.JPanel {
             return 4;
         }
         return 0;
+    }
+
+    // Método para calcular el descuento
+    private double calcularDescuento(String tipoTarjeta, int puntosCliente) {
+        double descuento = 0.0;
+
+        switch (tipoTarjeta) {
+            case "comun":
+                descuento = puntosCliente * 0.05; // 5 puntos equivalen a Q1.00 de descuento
+                break;
+            case "oro":
+                descuento = puntosCliente * 0.1; // 10 puntos equivalen a Q1.00 de descuento
+                break;
+            case "platino":
+                descuento = puntosCliente * 0.2; // 20 puntos equivalen a Q1.00 de descuento
+                break;
+            case "diamante":
+                descuento = puntosCliente * 0.3; // 30 puntos equivalen a Q1.00 de descuento
+                break;
+            default:
+                break;
+        }
+
+        return descuento;
     }
 
     /**
@@ -806,6 +832,46 @@ public class PanelVenta extends javax.swing.JPanel {
 
     private void btnConfirmarDescuentoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConfirmarDescuentoMouseClicked
         // TODO add your handling code here:
+        String tipoTarjeta = txtTarjeta.getSelectedItem().toString();
+
+        // Obtén la cantidad de puntos del cliente
+         puntosCliente = Integer.parseInt(txtPuntos.getText());
+
+        // Crea un cuadro de diálogo personalizado para ingresar la cantidad de puntos a utilizar
+        String input = JOptionPane.showInputDialog(this, "Tipo de tarjeta: " + tipoTarjeta + "\nPuntos del cliente: " + puntosCliente
+                + "\nIngrese la cantidad de puntos a utilizar como descuento:");
+
+        if (input != null && !input.isEmpty()) {
+            try {
+                int puntosDescuento = Integer.parseInt(input);
+                if (puntosDescuento > puntosCliente) {
+                    JOptionPane.showMessageDialog(this, "La cantidad de puntos a utilizar no puede ser mayor que los puntos disponibles.");
+                } else {
+                    // Calcula el descuento en función de los puntos ingresados
+                    double descuento = calcularDescuento(tipoTarjeta, puntosDescuento);
+
+                    // Resta el descuento al total de la venta
+                    totalVenta -= descuento;
+                    totalDescuento = (float) descuento;
+
+                    // Resta los puntos utilizados al cliente
+                    puntosCliente -= puntosDescuento;
+                    txtPuntos.setText(String.valueOf(puntosCliente));
+                    confirmarDescuento = true;
+                    System.out.println("Los nuevos puntos: "+ puntosCliente);
+
+                    // Muestra un mensaje con el tipo de tarjeta, la cantidad de puntos y el descuento aplicado
+                    JOptionPane.showMessageDialog(this, "Tipo de tarjeta: " + tipoTarjeta
+                            + "\nPuntos del cliente: " + puntosCliente
+                            + "\nDescuento aplicado: Q" + descuento);
+
+                    // Actualiza el total de la venta
+                    lbDescuento.setText("Q." + totalVenta);
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Ingrese una cantidad válida de puntos.");
+            }
+        }
     }//GEN-LAST:event_btnConfirmarDescuentoMouseClicked
 
     private void btnConfirmarDescuentoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConfirmarDescuentoMouseEntered
@@ -885,10 +951,10 @@ public class PanelVenta extends javax.swing.JPanel {
 
     private void btnIngresarClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIngresarClienteMouseClicked
         // TODO add your handling code here:
-        
+
         try {
             String sql = "INSERT INTO ControlPersonal.Cliente(nitCliente, nombreCliente, telefono, dpi, tarjeta, puntos, descuento, direccion) VALUES (?, ?, ?, ?, ?, ?, ?,?)";
-            
+
             PreparedStatement pst = conexion.prepareStatement(sql);
             pst.setString(1, txtNit.getText());
             pst.setString(2, txtNombre.getText());
@@ -898,14 +964,14 @@ public class PanelVenta extends javax.swing.JPanel {
             pst.setInt(6, Integer.parseInt(txtPuntos.getText()));
             pst.setInt(7, 0); // Se corrige aquí
             pst.setString(8, txtDireccion.getText());
-            
+
             int rowsInserted = pst.executeUpdate();
             if (rowsInserted > 0) {
                 System.out.println("La inserción se realizó correctamente.");
             }
-           
+
             //JOptionPane.showMessageDialog(rootPane, "Ingresado");
-           // jLabel5.setText("Producto ingresada");
+            // jLabel5.setText("Producto ingresada");
             //txtname.setText("");
         } catch (SQLException ex) {
             Logger.getLogger(ingresarProducto.class.getName()).log(Level.SEVERE, null, ex);
@@ -923,41 +989,78 @@ public class PanelVenta extends javax.swing.JPanel {
 
     private void btnConfirmarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConfirmarMouseClicked
         // TODO add your handling code here:
+        if (confirmarDescuento!=true) {
+            puntosCliente = Integer.parseInt(txtPuntos.getText());
+        }
+        double descuentoUtilizado = 0;
         String nitCliente = txtNit.getText().trim();
-
-        // Verifica que se haya ingresado un NIT válido
-        if (!nitCliente.isEmpty()) {
-            // Crea una instancia de la clase Venta con los datos de la venta
-            Venta venta = new Venta(0, idEmpleado, nitCliente, new Date(), totalVenta,totalDescuento, idTienda);
-         
-
-            // Crea una lista para almacenar los detalles de la venta
-            List<DetalleVenta> detallesVenta = new ArrayList<>();
-
-            // Recorre las filas de la tabla jTableProductos para obtener los detalles
-            for (int i = 0; i < tableModel.getRowCount(); i++) {
-                String nombreProducto = tableModel.getValueAt(i, 0).toString();
-                int cantidad = Integer.parseInt(tableModel.getValueAt(i, 1).toString());
-                double precioUnitario = Double.parseDouble(tableModel.getValueAt(i, 2).toString()) / cantidad;
-
-                // Obtén el ID del producto según el nombre
-                int idProducto = obtenerIdProductoPorNombre(nombreProducto);
-
-                if (idProducto != -1) { // Verifica que se haya obtenido un ID válido
-                    // Crea un objeto DetalleVenta y agrégalo a la lista
-                    DetalleVenta detalle = new DetalleVenta(0, idProducto, cantidad, precioUnitario, nombreProducto);
-                    detallesVenta.add(detalle);
-                } else {
-                    JOptionPane.showMessageDialog(this, "El producto '" + nombreProducto + "' no se encuentra en la base de datos.");
-                }
-            }
-
+        int puntosUtilizados = Integer.parseInt(txtPuntos.getText());
+        String textoLabel = lbDescuento.getText();
+        if (textoLabel != null && !textoLabel.trim().isEmpty()) {
+            String descuentoString = textoLabel.trim().replace("Q.", ""); // Eliminar "Q." si está presente
             try {
+                descuentoUtilizado = Double.parseDouble(descuentoString);
+            } catch (NumberFormatException e) {
+                // Manejar la excepción si el texto no es un número válido
+            }
+        } else {
+            // Manejar el caso en el que el label esté vacío
+            String descuentoString =lbTotal.getText().trim().replace("Q.", ""); // Eliminar "Q." si está presente
+            try {
+                descuentoUtilizado = Double.parseDouble(descuentoString);
+            } catch (NumberFormatException e) {
+                // Manejar la excepción si el texto no es un número válido
+            }
+            
+        }
+
+// Verifica que se haya ingresado un NIT válido
+        if (!nitCliente.isEmpty()) {
+            try {
+                // Actualizacion de DESCUENTO CLIENTE
+                String sqlActualizarDescuento = "UPDATE ControlPersonal.Cliente SET descuento = descuento + ? WHERE nitCliente = ?";
+                PreparedStatement pstActualizarDescuento = conexion.prepareStatement(sqlActualizarDescuento);
+                pstActualizarDescuento.setDouble(1, descuentoUtilizado);
+                pstActualizarDescuento.setString(2, nitCliente);
+                pstActualizarDescuento.executeUpdate();
+
+                // Actualizacion de PUNTOS CLIENTE
+                String sqlActualizarPuntos = "UPDATE ControlPersonal.Cliente SET puntos =  ? WHERE nitCliente = ?";
+                PreparedStatement pstActualizarPuntos = conexion.prepareStatement(sqlActualizarPuntos);
+                pstActualizarPuntos.setInt(1, puntosCliente);
+                pstActualizarPuntos.setString(2, nitCliente);
+                pstActualizarPuntos.executeUpdate();
+
+                // Crea una instancia de la clase Venta con los datos de la venta
+                Venta venta = new Venta(0, idEmpleado, nitCliente, new Date(), totalVenta, descuentoUtilizado, idTienda);
+
+                // Crea una lista para almacenar los detalles de la venta
+                List<DetalleVenta> detallesVenta = new ArrayList<>();
+
+                // Recorre las filas de la tabla jTableProductos para obtener los detalles
+                for (int i = 0; i < tableModel.getRowCount(); i++) {
+                    String nombreProducto = tableModel.getValueAt(i, 0).toString();
+                    int cantidad = Integer.parseInt(tableModel.getValueAt(i, 1).toString());
+                    double precioUnitario = Double.parseDouble(tableModel.getValueAt(i, 2).toString()) / cantidad;
+
+                    // Obtén el ID del producto según el nombre
+                    int idProducto = obtenerIdProductoPorNombre(nombreProducto);
+
+                    if (idProducto != -1) { // Verifica que se haya obtenido un ID válido
+                        // Crea un objeto DetalleVenta y agrégalo a la lista
+                        DetalleVenta detalle = new DetalleVenta(0, idProducto, cantidad, precioUnitario, nombreProducto);
+                        detallesVenta.add(detalle);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "El producto '" + nombreProducto + "' no se encuentra en la base de datos.");
+                    }
+                }
+
                 // Llama al método para insertar la venta en la base de datos
                 ventaDAO.insertarVenta(venta, detallesVenta);
 
                 // Restablece los campos y la tabla para una nueva venta
                 reiniciarVenta();
+
                 JOptionPane.showMessageDialog(this, "Venta registrada con éxito.");
             } catch (SQLException e) {
                 JOptionPane.showMessageDialog(this, "Error al registrar la venta: " + e.getMessage());
@@ -973,7 +1076,7 @@ public class PanelVenta extends javax.swing.JPanel {
 
     private void btnConfirmarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConfirmarMouseExited
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_btnConfirmarMouseExited
 
     private void txtTarjetaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtTarjetaMouseClicked
