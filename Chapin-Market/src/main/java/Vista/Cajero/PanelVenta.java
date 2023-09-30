@@ -16,6 +16,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -29,6 +30,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -49,17 +51,21 @@ public class PanelVenta extends javax.swing.JPanel {
     public int idTienda;
     public int idEmpleado;
     public float totalDescuento = 0;
-    public int puntosCliente =0; 
+    public int puntosCliente = 0;
+    public int puntosAntes = 0;
+    public int descuentoGastado = 0;
+
     public boolean confirmarDescuento = false;
 
     public PanelVenta(int idTienda, int idEmpleado) {
+
         this.idTienda = idTienda;
         this.idEmpleado = idEmpleado;
         this.idTienda = idTienda;
         initComponents();
         agregarDatosSelect();
+        MostrarLupa();
         jTableProductos.setModel(tableModel);
-
         ventaDAO = new VentaDAO(conexion);
         txtTarjeta.addItem("comun");
         txtTarjeta.addItem("oro");
@@ -68,6 +74,7 @@ public class PanelVenta extends javax.swing.JPanel {
         txtTarjeta.addItem("ninguna");
 
     }
+
     CustomTableModel tableModel = new CustomTableModel(new Object[]{"Nombre", "Cantidad", "Precio"}, 0);
     private double totalVenta = 0.0;
     private VentaDAO ventaDAO;
@@ -259,6 +266,47 @@ public class PanelVenta extends javax.swing.JPanel {
         }
 
         return descuento;
+    }
+
+    private int calcularPuntos(String tipoTarjeta, int puntos, int gastado, int actual) {
+        double descuento = 0.0;
+        int aux;
+        int puntosActuales;
+
+        System.out.println("esta entrando");
+        switch (tipoTarjeta) {
+            case "comun":
+                //calcular los puntos fijos sin lo gastado acualmente y obtener el residuo
+                aux = gastado % 200;
+                System.out.println("---------->Residuo " + aux);
+
+                puntosActuales = ((aux + actual) / 200);
+                System.out.println("---------->Monto sin multiplicar " + aux);
+                puntosActuales = puntosActuales * 5;
+                System.out.println("---------->Puntos finales " + puntosActuales);
+                return puntosActuales;
+            //int residuo = gastado/puntos
+            //calcular los puntos con el residuo y lo gastado
+            case "oro":
+                aux = gastado % 200;
+                puntosActuales = ((aux + actual) / 200);
+                puntosActuales = puntosActuales * 10;
+                return puntosActuales;
+            case "platino":
+                aux = gastado % 200;
+                puntosActuales = ((aux + actual) / 200);
+                puntosActuales = puntosActuales * 20;
+                return puntosActuales;
+            case "diamante":
+                aux = gastado % 200;
+                puntosActuales = ((aux + actual) / 200);
+                puntosActuales = puntosActuales * 30;
+                return puntosActuales;
+            default:
+                break;
+        }
+        return 0;
+
     }
 
     /**
@@ -755,6 +803,15 @@ public class PanelVenta extends javax.swing.JPanel {
         add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 250, 120, -1));
     }// </editor-fold>//GEN-END:initComponents
 
+    public void MostrarLupa() {
+        ImageIcon iconLogo = new ImageIcon(getClass().getResource("/Images/lupa.png"));
+        Image image = iconLogo.getImage();
+        Image scaledImage = image.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        btbuscar.setIcon(scaledIcon);
+
+    }
+
     private void txtNitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNitActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNitActionPerformed
@@ -835,7 +892,8 @@ public class PanelVenta extends javax.swing.JPanel {
         String tipoTarjeta = txtTarjeta.getSelectedItem().toString();
 
         // Obtén la cantidad de puntos del cliente
-         puntosCliente = Integer.parseInt(txtPuntos.getText());
+        puntosCliente = Integer.parseInt(txtPuntos.getText());
+        puntosAntes = Integer.parseInt(txtPuntos.getText());
 
         // Crea un cuadro de diálogo personalizado para ingresar la cantidad de puntos a utilizar
         String input = JOptionPane.showInputDialog(this, "Tipo de tarjeta: " + tipoTarjeta + "\nPuntos del cliente: " + puntosCliente
@@ -858,7 +916,7 @@ public class PanelVenta extends javax.swing.JPanel {
                     puntosCliente -= puntosDescuento;
                     txtPuntos.setText(String.valueOf(puntosCliente));
                     confirmarDescuento = true;
-                    System.out.println("Los nuevos puntos: "+ puntosCliente);
+                    System.out.println("Los nuevos puntos: " + puntosCliente);
 
                     // Muestra un mensaje con el tipo de tarjeta, la cantidad de puntos y el descuento aplicado
                     JOptionPane.showMessageDialog(this, "Tipo de tarjeta: " + tipoTarjeta
@@ -922,6 +980,8 @@ public class PanelVenta extends javax.swing.JPanel {
                     txtTarjeta.setSelectedIndex(getTarjeta(tarjeta));
                     txtDireccion.setText(direccion);
                     txtDPI.setText(dpi);
+
+                    descuentoGastado = (int) descuento;
 
                     clienteEncontrado = true; // Se encontró al menos un cliente
                 }
@@ -989,7 +1049,7 @@ public class PanelVenta extends javax.swing.JPanel {
 
     private void btnConfirmarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConfirmarMouseClicked
         // TODO add your handling code here:
-        if (confirmarDescuento!=true) {
+        if (confirmarDescuento != true) {
             puntosCliente = Integer.parseInt(txtPuntos.getText());
         }
         double descuentoUtilizado = 0;
@@ -1005,14 +1065,17 @@ public class PanelVenta extends javax.swing.JPanel {
             }
         } else {
             // Manejar el caso en el que el label esté vacío
-            String descuentoString =lbTotal.getText().trim().replace("Q.", ""); // Eliminar "Q." si está presente
+            String descuentoString = lbTotal.getText().trim().replace("Q.", ""); // Eliminar "Q." si está presente
             try {
                 descuentoUtilizado = Double.parseDouble(descuentoString);
             } catch (NumberFormatException e) {
                 // Manejar la excepción si el texto no es un número válido
             }
-            
+
         }
+        int actual = (int) totalVenta;
+        puntosCliente = puntosCliente + calcularPuntos(txtTarjeta.getSelectedItem().toString(), puntosAntes, descuentoGastado, actual);
+        System.out.println("puntosssssssssssss " + puntosCliente);
 
 // Verifica que se haya ingresado un NIT válido
         if (!nitCliente.isEmpty()) {

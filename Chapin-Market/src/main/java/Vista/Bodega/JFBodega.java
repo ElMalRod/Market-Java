@@ -35,7 +35,7 @@ public class JFBodega extends javax.swing.JFrame {
        
         initComponents();
         setLocationRelativeTo(null);//pone la pantalla en el centro
-         //MostrarLogo();
+        MostrarLogo();
         this.id = id;
        
     }

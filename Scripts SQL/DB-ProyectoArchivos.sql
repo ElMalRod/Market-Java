@@ -13,7 +13,6 @@ CREATE DATABASE "chapin-db"
     IS_TEMPLATE = False;
 
 CREATE SCHEMA  ControlPersonal;
-CREATE SCHEMA  ControlInventario;
 CREATE SCHEMA  ControlVentas;
 CREATE SCHEMA  ControlEmpresas;
 
@@ -61,17 +60,6 @@ CREATE TABLE ControlPersonal.Cliente (
     descuento DECIMAL(10, 2),
     direccion VARCHAR(50) NOT NULL
 );
-
-
-CREATE TABLE ControlInventario.Inventario(
-    idInventario SERIAL PRIMARY KEY,
-    cantidad INT NOT NULL,
-    estado BOOLEAN NOT NULL,
-    pasillo INT ,
-    idProducto INT NOT NULL,
-    FOREIGN KEY (idProducto) REFERENCES ControlEmpresas.Producto(idProducto)
-);
-
 
 CREATE TABLE ControlVentas.Venta(
     idVenta SERIAL NOT NULL,

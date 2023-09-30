@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package Vista.Cajero;
+package Vista.Admin;
 
 /**
  *
@@ -13,13 +13,6 @@ public class PanelClientes extends javax.swing.JPanel {
     /**
      * Creates new form PanelClientes
      */
-    public int id;  
-
-    public PanelClientes(int id) {
-        this.id = id;
-        initComponents();
-    }
-
     public PanelClientes() {
         initComponents();
     }

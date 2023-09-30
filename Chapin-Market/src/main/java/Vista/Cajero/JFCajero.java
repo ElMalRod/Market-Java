@@ -7,10 +7,12 @@ package Vista.Cajero;
 import com.coderhouse.chapin.market.Conexion;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Image;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -37,6 +39,7 @@ public class JFCajero extends javax.swing.JFrame {
         String nombreTienda = obtenerNombreTienda();
         lblNombreTienda.setText("Tienda: " + nombreTienda); // Muestra el nombre de la tienda en un JLabel
         setLocationRelativeTo(null);//pone la pantalla en el centro
+        MostrarLogo();
     }
     
 
@@ -44,8 +47,11 @@ public class JFCajero extends javax.swing.JFrame {
 
     public JFCajero() {
         initComponents();
+        MostrarLogo();
         
     }
+    
+  
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -62,10 +68,10 @@ public class JFCajero extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         lblNombreTienda = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        btnClientes = new javax.swing.JLabel();
         lblNombreTienda1 = new javax.swing.JLabel();
         btnModificar = new javax.swing.JLabel();
         btnVenta = new javax.swing.JLabel();
+        lbLogo = new javax.swing.JLabel();
         btIngresar2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -128,26 +134,6 @@ public class JFCajero extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(25, 69, 107));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        btnClientes.setBackground(new java.awt.Color(25, 69, 107));
-        btnClientes.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        btnClientes.setForeground(new java.awt.Color(255, 255, 255));
-        btnClientes.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btnClientes.setText("CLIENTES");
-        btnClientes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnClientes.setOpaque(true);
-        btnClientes.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnClientesMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btnClientesMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                btnClientesMouseExited(evt);
-            }
-        });
-        jPanel1.add(btnClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 190, 50));
-
         lblNombreTienda1.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         lblNombreTienda1.setForeground(new java.awt.Color(255, 255, 255));
         lblNombreTienda1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -191,7 +177,8 @@ public class JFCajero extends javax.swing.JFrame {
                 btnVentaMouseExited(evt);
             }
         });
-        jPanel1.add(btnVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 180, 192, 50));
+        jPanel1.add(btnVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 192, 50));
+        jPanel1.add(lbLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 150, 130));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 190, 790));
 
@@ -218,7 +205,14 @@ public class JFCajero extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+      public void MostrarLogo() {
+        ImageIcon iconLogo = new ImageIcon(getClass().getResource("/Images/4.png"));
+        Image image = iconLogo.getImage();
+        Image scaledImage = image.getScaledInstance(lbLogo.getWidth(), lbLogo.getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        lbLogo.setIcon(scaledIcon);
 
+    }
     private String obtenerNombreTienda() {
         Connection conexion = new Conexion().establecerConexion();
         String nombreTienda = "";
@@ -297,27 +291,6 @@ public class JFCajero extends javax.swing.JFrame {
         btnVenta.setBackground(new Color(25, 69, 107));
     }//GEN-LAST:event_btnVentaMouseExited
 
-    private void btnClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnClientesMouseClicked
-        // TODO add your handling code here:
-        PanelClientes p = new PanelClientes(idTienda);
-        p.setSize(1250, 720);
-        p.setLocation(0, 0);
-        content.removeAll();
-        content.add(p, BorderLayout.CENTER);
-        content.revalidate();
-        content.repaint();
-    }//GEN-LAST:event_btnClientesMouseClicked
-
-    private void btnClientesMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnClientesMouseEntered
-        // TODO add your handling code here:
-        btnModificar.setBackground(new Color(22, 199, 154));
-    }//GEN-LAST:event_btnClientesMouseEntered
-
-    private void btnClientesMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnClientesMouseExited
-        // TODO add your handling code here:
-        btnModificar.setBackground(new Color(25, 69, 107));
-    }//GEN-LAST:event_btnClientesMouseExited
-
     private void btIngresar2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btIngresar2MouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_btIngresar2MouseClicked
@@ -368,13 +341,13 @@ public class JFCajero extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel btIngresar2;
     private javax.swing.JLabel btUser;
-    private javax.swing.JLabel btnClientes;
     private javax.swing.JLabel btnModificar;
     private javax.swing.JLabel btnVenta;
     private javax.swing.JPanel content;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lbLogo;
     private javax.swing.JLabel lblNombreTienda;
     private javax.swing.JLabel lblNombreTienda1;
     // End of variables declaration//GEN-END:variables

@@ -5,12 +5,14 @@
 package Vista.Admin;
 
 import com.coderhouse.chapin.market.Conexion;
+import java.awt.Image;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -31,6 +33,7 @@ public class PanelTarjetas extends javax.swing.JPanel {
         txtTarjeta.addItem("platino");
         txtTarjeta.addItem("diamante");
         txtTarjeta.addItem("ninguna");
+        MostrarLupa();
     }
 
     private int getTarjeta(String tarjeta) {
@@ -58,6 +61,16 @@ public class PanelTarjetas extends javax.swing.JPanel {
      */
     public PanelTarjetas() {
         initComponents();
+        MostrarLupa();
+    }
+
+    public void MostrarLupa() {
+        ImageIcon iconLogo = new ImageIcon(getClass().getResource("/Images/lupa.png"));
+        Image image = iconLogo.getImage();
+        Image scaledImage = image.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        btbuscar.setIcon(scaledIcon);
+
     }
 
     /**
@@ -344,17 +357,17 @@ public class PanelTarjetas extends javax.swing.JPanel {
     private void btnIngresarClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIngresarClienteMouseClicked
         try {
             // TODO add your handling code here:
-            
+
             // Las credenciales del administrador son correctas, procede con la actualización del cliente
             String sql = "UPDATE ControlPersonal.Cliente SET   tarjeta=?, puntos=?, descuento=? WHERE idCliente =?";
-            
+
             PreparedStatement pst = conexion.prepareStatement(sql);
-            
+
             pst.setString(1, txtTarjeta.getSelectedItem().toString());
             pst.setInt(2, Integer.parseInt(txtPuntos.getText()));
             pst.setFloat(3, Float.parseFloat(txtDescuento.getText()));
             pst.setInt(4, idCliente);
-            
+
             int rowsInserted = pst.executeUpdate();
             if (rowsInserted > 0) {
                 JOptionPane.showMessageDialog(this, "La actualizacion se  realizó correctamente.");

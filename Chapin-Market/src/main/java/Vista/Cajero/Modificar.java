@@ -6,12 +6,14 @@ package Vista.Cajero;
 
 import Vista.Inventario.trasladarProducto;
 import com.coderhouse.chapin.market.Conexion;
+import java.awt.Image;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 
@@ -36,10 +38,21 @@ public class Modificar extends javax.swing.JPanel {
         txtTarjeta.addItem("platino");
         txtTarjeta.addItem("diamante");
         txtTarjeta.addItem("ninguna");
+        MostrarLupa();
     }
 
     public Modificar() {
         initComponents();
+        MostrarLupa();
+    }
+    
+       public void MostrarLupa() {
+        ImageIcon iconLogo = new ImageIcon(getClass().getResource("/Images/lupa.png"));
+        Image image = iconLogo.getImage();
+        Image scaledImage = image.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        btbuscar.setIcon(scaledIcon);
+
     }
 
     private int getTarjeta(String tarjeta) {

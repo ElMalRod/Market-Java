@@ -7,10 +7,12 @@ package Vista.Inventario;
 import com.coderhouse.chapin.market.Conexion;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Image;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -22,14 +24,14 @@ public class JFInventory extends javax.swing.JFrame {
     /**
      * Creates new form JFInventory
      */
-        public int id;
+    public int id;
 
     public JFInventory(int id) {
         initComponents();
         setLocationRelativeTo(null);//pone la pantalla en el centro
-         //MostrarLogo();
+        MostrarLogo();
         this.id = id;
-        
+
     }
 
     public int getId() {
@@ -40,9 +42,9 @@ public class JFInventory extends javax.swing.JFrame {
         this.id = id;
     }
 
-
     public JFInventory() {
         initComponents();
+        MostrarLogo();
     }
 
     /**
@@ -63,6 +65,7 @@ public class JFInventory extends javax.swing.JFrame {
         content = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        lbLogo1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(1100, 710));
@@ -92,7 +95,7 @@ public class JFInventory extends javax.swing.JFrame {
                 btnVerMouseExited(evt);
             }
         });
-        jPanel1.add(btnVer, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 180, 192, 50));
+        jPanel1.add(btnVer, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 192, 50));
 
         btIngresar.setBackground(new java.awt.Color(25, 69, 107));
         btIngresar.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
@@ -112,13 +115,13 @@ public class JFInventory extends javax.swing.JFrame {
                 btIngresarMouseExited(evt);
             }
         });
-        jPanel1.add(btIngresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 190, 50));
+        jPanel1.add(btIngresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 290, 190, 50));
 
         lblNombreTienda.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         lblNombreTienda.setForeground(new java.awt.Color(255, 255, 255));
         lblNombreTienda.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jPanel1.add(lblNombreTienda, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 190, 40));
-        jPanel1.add(lbLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 150, 130));
+        jPanel1.add(lbLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 150, 130));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 190, 710));
 
@@ -163,10 +166,20 @@ public class JFInventory extends javax.swing.JFrame {
         jLabel2.setBackground(new java.awt.Color(17, 105, 142));
         jLabel2.setOpaque(true);
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 20, 250, 20));
+        getContentPane().add(lbLogo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 150, 130));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
- public void setUsuarioYRol(String nombreUsuario, String rol) {
+        public void MostrarLogo() {
+        ImageIcon iconLogo = new ImageIcon(getClass().getResource("/Images/4.png"));
+        Image image = iconLogo.getImage();
+        Image scaledImage = image.getScaledInstance(lbLogo.getWidth(), lbLogo.getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        lbLogo.setIcon(scaledIcon);
+
+    }
+
+    public void setUsuarioYRol(String nombreUsuario, String rol) {
         btUser.setText(rol + " - " + nombreUsuario);
         String nombreTienda = obtenerNombreTienda();
         lblNombreTienda.setText("Tienda: " + nombreTienda); // Muestra el nombre de la tienda en un JLabel
@@ -294,6 +307,7 @@ public class JFInventory extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lbLogo;
+    private javax.swing.JLabel lbLogo1;
     private javax.swing.JLabel lblNombreTienda;
     // End of variables declaration//GEN-END:variables
 }
