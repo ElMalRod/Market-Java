@@ -20,7 +20,7 @@ CREATE TABLE ControlEmpresas.Tienda(
     idTienda SERIAL PRIMARY KEY,
     nombreTienda VARCHAR(50) NOT NULL,
     direccion VARCHAR(50) NOT NULL,
-    telefono VARCHAR(10) NOT NULL,
+    telefono VARCHAR(10) NOT NULL
 );
 
 CREATE TABLE ControlEmpresas.Producto(
@@ -29,12 +29,13 @@ CREATE TABLE ControlEmpresas.Producto(
     fabricante VARCHAR(50) NOT NULL,
     precio DECIMAL(10,2) NOT NULL,
     cantidad INT NOT NULL,
-    estado BOOLEAN NOT NULL, /* 0-BODEGA 1-ESTANTERIA*/
-    pasillo INT , /*SI NO TIENE NUMERO ES QUE ESTA EN BODEGA*/
+    estado BOOLEAN NOT NULL, 
+    pasillo INT , 
     idTienda INT NOT NULL,
     FOREIGN KEY (idTienda) REFERENCES ControlEmpresas.Tienda(idTienda)
 
 );
+
 
 CREATE TABLE ControlPersonal.Empleado(
     idEmpleado SERIAL PRIMARY KEY,
@@ -85,26 +86,3 @@ CREATE TABLE ControlVentas.DetalleVenta (
     FOREIGN KEY (idVenta) REFERENCES ControlVentas.Venta(idVenta) ON DELETE CASCADE,
     FOREIGN KEY (idProducto) REFERENCES ControlEmpresas.Producto(idProducto)
 );
-
-INSERT INTO ControlEmpresas.Tienda(nombreTienda, direccion, telefono) VALUES ('Sucursal Centro', 'Direccion1', '12345678');
-INSERT INTO ControlEmpresas.Tienda(nombreTienda, direccion, telefono) VALUES ('Sucursal Norte', 'Direccion2', '12345678');
-INSERT INTO ControlEmpresas.Tienda(nombreTienda, direccion, telefono) VALUES ('Sucursal Sur', 'Direccion3', '12345678');
-
-INSERT INTO ControlPersonal.Empleado(nombreEmpleado, telefono, rol, dpi, username, password, idTienda,cajas) VALUES ('Emilio', '12345678', 'Administrador', '1234567891011', 'emilio', '123456', 1,NULL);
-INSERT INTO ControlPersonal.Empleado(nombreEmpleado, telefono, rol, dpi, username, password, idTienda,cajas) VALUES ('Juan', '12345678', 'Cajero', '1234567891011', 'juan', '123456', 1, 1);
-INSERT INTO ControlPersonal.Empleado(nombreEmpleado, telefono, rol, dpi, username, password, idTienda,cajas) VALUES ('Pedro', '12345678', 'Bodega', '1234567891011', 'pedro', '123456', 1,NULL);
-INSERT INTO ControlPersonal.Empleado(nombreEmpleado, telefono, rol, dpi, username, password, idTienda,cajas) VALUES ('Maria', '12345678', 'Inventario', '1234567891011', 'maria', '123456', 1,NULL);
-
-INSERT INTO ControlPersonal.Empleado(nombreEmpleado, telefono, rol, dpi, username, password, idTienda,cajas) VALUES ('Luis', '12345678', 'Administrador', '1234567891011', 'luis', '123456', 2,NULL);
-INSERT INTO ControlPersonal.Empleado(nombreEmpleado, telefono, rol, dpi, username, password, idTienda,cajas) VALUES ('Jose', '12345678', 'Cajero', '1234567891011', 'jose', '123456', 2,1);
-INSERT INTO ControlPersonal.Empleado(nombreEmpleado, telefono, rol, dpi, username, password, idTienda,cajas) VALUES ('Carlos', '12345678', 'Bodega', '1234567891011', 'carlos', '123456', 2,NULL);
-INSERT INTO ControlPersonal.Empleado(nombreEmpleado, telefono, rol, dpi, username, password, idTienda,cajas) VALUES ('Ana', '12345678', 'Inventario', '1234567891011', 'ana', '123456', 2,NULL);
-
-INSERT INTO ControlPersonal.Empleado(nombreEmpleado, telefono, rol, dpi, username, password, idTienda,cajas) VALUES ('Mario', '12345678', 'Administrador', '1234567891011', 'mario', '123456', 3,NULL);
-INSERT INTO ControlPersonal.Empleado(nombreEmpleado, telefono, rol, dpi, username, password, idTienda,cajas) VALUES ('Luisa', '12345678', 'Cajero', '1234567891011', 'luisa', '123456', 3,1);
-INSERT INTO ControlPersonal.Empleado(nombreEmpleado, telefono, rol, dpi, username, password, idTienda,cajas) VALUES ('Pedro', '12345678', 'Bodega', '1234567891011', 'pedro', '123456', 3,NULL);
-INSERT INTO ControlPersonal.Empleado(nombreEmpleado, telefono, rol, dpi, username, password, idTienda,cajas) VALUES ('Maria', '12345678', 'Inventario', '1234567891011', 'maria', '123456', 3,NULL);
-
-INSERT INTO ControlVentas.Venta(fecha, total, idEmpleado, idProducto, cantidad, nitCliente, idTienda) VALUES ('2020-01-01', 10, 2, 2, 1, '123', 1);
-
-INSERT INTO ControlPersonal.Cliente(nitCliente, nombreCliente, telefono, dpi, tarjeta, puntos, descuento, direccion) VALUES ('CF', 'CF', '0000', '0000', '0000', 0, 0, 'CF');

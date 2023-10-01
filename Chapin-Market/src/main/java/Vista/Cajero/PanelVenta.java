@@ -1028,9 +1028,9 @@ public class PanelVenta extends javax.swing.JPanel {
             int rowsInserted = pst.executeUpdate();
             if (rowsInserted > 0) {
                 System.out.println("La inserción se realizó correctamente.");
+                JOptionPane.showMessageDialog(this, "Cliente Registrado");
             }
 
-            //JOptionPane.showMessageDialog(rootPane, "Ingresado");
             // jLabel5.setText("Producto ingresada");
             //txtname.setText("");
         } catch (SQLException ex) {

@@ -27,6 +27,7 @@ public class TopProductos extends javax.swing.JPanel {
         initComponents();
         tableModel = new DefaultTableModel();
         tableModel.addColumn("ID Producto");
+        tableModel.addColumn("Nombre Producto");
         tableModel.addColumn("Cantidad de Ventas");
         mostrar();
         jTableProducto.setModel(tableModel);
@@ -37,14 +38,15 @@ public class TopProductos extends javax.swing.JPanel {
      */
     public TopProductos() {
         initComponents();
-    
+
     }
 
     public void mostrar() throws SQLException {
 
-        String sql = "SELECT idProducto, COUNT(*) AS cantidadVentas "
-                + "FROM ControlVentas.DetalleVenta "
-                + "GROUP BY idProducto "
+        String sql = "SELECT p.idProducto, p.nombreProducto, COUNT(*) AS cantidadVentas "
+                + "FROM ControlVentas.DetalleVenta dv "
+                + "JOIN ControlEmpresas.Producto p ON dv.idProducto = p.idProducto "
+                + "GROUP BY p.idProducto, p.nombreProducto "
                 + "ORDER BY cantidadVentas DESC "
                 + "LIMIT 10";
 
@@ -53,9 +55,10 @@ public class TopProductos extends javax.swing.JPanel {
                 while (resultado.next()) {
                     // Procesa los resultados
                     int idProducto = resultado.getInt("idProducto");
+                    String nombreProducto = resultado.getString("nombreProducto");
                     int cantidadVentas = resultado.getInt("cantidadVentas");
-                    System.out.println("ID Producto: " + idProducto + ", Cantidad de Ventas: " + cantidadVentas);
-                    Object[] fila = {idProducto, cantidadVentas};
+                    System.out.println("ID Producto: " + idProducto + ", Nombre: " + nombreProducto + ", Cantidad de Ventas: " + cantidadVentas);
+                    Object[] fila = {idProducto, nombreProducto, cantidadVentas};
                     tableModel.addRow(fila);
                 }
             }

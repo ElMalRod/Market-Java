@@ -226,9 +226,9 @@ public class IngresarEmpleado extends javax.swing.JPanel {
             // TODO add your handling code here:
             String roll = txtRol.getSelectedItem().toString();
             if (roll.equals("Cajero")) {
-                String pas = JOptionPane.showInputDialog(this, "Ingrese numero de caja del cajera:");
+                String pas = JOptionPane.showInputDialog(this, "Ingrese numero de caja del cajero:");
                 int aux = Integer.parseInt(pas);
-                if (aux > 5) {
+                if (aux > 7) {
                     JOptionPane.showInputDialog(this, "Numero de caja inexistente, intentelo de nuevo.");
                 } else {
                     caja = aux;

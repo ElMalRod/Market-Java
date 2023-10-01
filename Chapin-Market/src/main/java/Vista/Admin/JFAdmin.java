@@ -96,7 +96,6 @@ public class JFAdmin extends javax.swing.JFrame {
         btnTarjetas = new javax.swing.JLabel();
         btnEmpleados = new javax.swing.JLabel();
         lblNombreTienda = new javax.swing.JLabel();
-        btnClientes = new javax.swing.JLabel();
         btnHistorial = new javax.swing.JLabel();
         btnTopProductos = new javax.swing.JLabel();
         lbLogo = new javax.swing.JLabel();
@@ -198,26 +197,6 @@ public class JFAdmin extends javax.swing.JFrame {
         lblNombreTienda.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jPanel1.add(lblNombreTienda, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 190, 40));
 
-        btnClientes.setBackground(new java.awt.Color(25, 69, 107));
-        btnClientes.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        btnClientes.setForeground(new java.awt.Color(255, 255, 255));
-        btnClientes.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btnClientes.setText("VER CLIENTES");
-        btnClientes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnClientes.setOpaque(true);
-        btnClientes.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnClientesMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btnClientesMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                btnClientesMouseExited(evt);
-            }
-        });
-        jPanel1.add(btnClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 300, 190, 50));
-
         btnHistorial.setBackground(new java.awt.Color(25, 69, 107));
         btnHistorial.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         btnHistorial.setForeground(new java.awt.Color(255, 255, 255));
@@ -236,7 +215,7 @@ public class JFAdmin extends javax.swing.JFrame {
                 btnHistorialMouseExited(evt);
             }
         });
-        jPanel1.add(btnHistorial, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 410, 190, 50));
+        jPanel1.add(btnHistorial, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 380, 190, 50));
 
         btnTopProductos.setBackground(new java.awt.Color(25, 69, 107));
         btnTopProductos.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
@@ -256,7 +235,7 @@ public class JFAdmin extends javax.swing.JFrame {
                 btnTopProductosMouseExited(evt);
             }
         });
-        jPanel1.add(btnTopProductos, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 460, 192, 50));
+        jPanel1.add(btnTopProductos, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 440, 192, 50));
         jPanel1.add(lbLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 150, 130));
 
         btnVentas.setBackground(new java.awt.Color(25, 69, 107));
@@ -277,7 +256,7 @@ public class JFAdmin extends javax.swing.JFrame {
                 btnVentasMouseExited(evt);
             }
         });
-        jPanel1.add(btnVentas, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 350, 192, 50));
+        jPanel1.add(btnVentas, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 320, 192, 50));
 
         btnTopClientes.setBackground(new java.awt.Color(25, 69, 107));
         btnTopClientes.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
@@ -297,7 +276,7 @@ public class JFAdmin extends javax.swing.JFrame {
                 btnTopClientesMouseExited(evt);
             }
         });
-        jPanel1.add(btnTopClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 520, 192, 50));
+        jPanel1.add(btnTopClientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 500, 192, 50));
 
         btnTopTiendas.setBackground(new java.awt.Color(25, 69, 107));
         btnTopTiendas.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
@@ -317,7 +296,7 @@ public class JFAdmin extends javax.swing.JFrame {
                 btnTopTiendasMouseExited(evt);
             }
         });
-        jPanel1.add(btnTopTiendas, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 570, 192, 50));
+        jPanel1.add(btnTopTiendas, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 560, 192, 50));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -430,21 +409,6 @@ public class JFAdmin extends javax.swing.JFrame {
         // TODO add your handling code here:
         btnEmpleados.setBackground(new Color(25, 69, 107));
     }//GEN-LAST:event_btnEmpleadosMouseExited
-
-    private void btnClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnClientesMouseClicked
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_btnClientesMouseClicked
-
-    private void btnClientesMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnClientesMouseEntered
-        // TODO add your handling code here:
-         btnClientes.setBackground(new Color(22, 199, 154));
-    }//GEN-LAST:event_btnClientesMouseEntered
-
-    private void btnClientesMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnClientesMouseExited
-        // TODO add your handling code here:
-         btnClientes.setBackground(new Color(25, 69, 107));
-    }//GEN-LAST:event_btnClientesMouseExited
 
     private void btnTopProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnTopProductosMouseClicked
         // TODO add your handling code here:
@@ -584,7 +548,6 @@ public class JFAdmin extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel btUser;
-    private javax.swing.JLabel btnClientes;
     private javax.swing.JLabel btnEmpleados;
     private javax.swing.JLabel btnHistorial;
     private javax.swing.JLabel btnTarjetas;
